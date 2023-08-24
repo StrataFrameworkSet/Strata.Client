@@ -1,0 +1,43 @@
+{
+  "name": "strata.client.react",
+  "version": "0.0.1",
+  "description": "",
+  "main": "build/dist/index.js",
+  "types": "build/dist/index.d.ts",
+  "scripts": {
+    "install-strata.foundation.core": "yarn add strata.foundation.core",
+    "install-strata.client.core": "yarn add file:../Strata.Client.Core/build/dist/strata.client.core-v0.0.1.tgz",
+    "copy-package": "shx cp main/typescript/package.json build/dist/package.json",
+    "clean": "del-cli -f build/dist ./*.tgz",
+    "build": "yarn run install-strata.client.core && tsc && yarn run copy-package && cd build/dist && yarn pack",
+    "publish-package": "cd build/dist && yarn publish",
+    "new-patch": "yarn version --patch",
+    "new-minor": "yarn version --minor",
+    "new-major": "yarn version --major",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@blueprintjs/core": "^5.2.1",
+    "@blueprintjs/datetime": "^5.0.9",
+    "@blueprintjs/icons": "^5.1.5",
+    "@blueprintjs/select": "^5.0.9",
+    "@blueprintjs/table": "^5.0.9",
+    "@types/react": "^18.2.21",
+    "@types/react-dom": "^18.2.7",
+    "@types/react-router": "^5.1.20",
+    "@types/react-router-dom": "^5.3.3",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^5.3.4",
+    "rxjs": "^6.5.5",
+    "strata.client.core": "file:../Strata.Client.Core/build/dist/strata.client.core-v0.0.1.tgz",
+    "strata.foundation.core": "^0.0.6",
+    "typescript": "^5.1.6"
+  },
+  "devDependencies": {
+    "shx": "^0.3.4"
+  }
+}

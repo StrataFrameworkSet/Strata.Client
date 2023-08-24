@@ -1,0 +1,48 @@
+@import "~@blueprintjs/core/lib/css/blueprint.css";
+
+.MainView {
+    text-align: center;
+}
+
+img.logo {
+    margin-right: 10px;
+}
+div.app-name {
+    color: #48AFF0 !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+a.menu-selected {
+    text-decoration: underline #2B95D6;
+    text-underline-position: under;
+}
+
+a.menu-selected:hover {
+    text-decoration: underline #2B95D6;
+    text-underline-position: under;
+}
+
+button.menu-selected {
+    text-decoration: underline #2B95D6;
+    text-underline-position: under;
+}
+
+button.menu-selected:hover {
+    text-decoration: underline #2B95D6;
+    text-underline-position: under;
+}
+
+.bp3-card {
+    height: calc(100vh - 40px - 40px);
+    flex-grow: 1;
+}
+
+.app-container {
+    height: 100%;
+}
+
+.main-footer {
+    background: #293742;
+    height: 30px;
+}
