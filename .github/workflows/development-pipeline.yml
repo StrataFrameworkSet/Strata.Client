@@ -32,7 +32,7 @@ jobs:
       - name: Chmod GradleW
         run: chmod a+x gradlew
 
-      - name: Build with Gradle
+      - name: Build Java with Gradle
         uses: gradle/gradle-build-action@749f47bda3e44aa060e82d7b3ef7e40d953bd629
         with:
           gradle-executable: gradlew
@@ -42,4 +42,25 @@ jobs:
         uses: mikepenz/action-junit-report@v3
         if: success() || failure() # always run even if the previous step fails
         with:
-            report_paths: '**/build/test-results/test/TEST-*.xml'
+          report_paths: '**/build/test-results/test/TEST-*.xml'
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.5.1'
+          registry-url: 'https://registry.npmjs.org/'
+
+      - name: Build Typescript with Yarn
+        run: yarn run test
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NODE_AUTH_TOKEN}}
+
+      - name: Commit package.json with New Version
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "<>"
+          git add Components/Strata.Client.Core/main/typescript/package.json
+          git add Components/Strata.Client.React/main/typescript/package.json
+          git commit -m "strata.client.* package.json new version"
+          git push origin development
+

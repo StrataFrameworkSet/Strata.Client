@@ -17,7 +17,7 @@ class MenuItemLink
     render()
     {
         return (
-            <MenuItem className="bp3-minimal" icon={this.props.icon} text={this.props.text} onClick={() => this.doClick()}/>);
+            <MenuItem className="bp5-minimal" icon={this.props.icon} text={this.props.text} onClick={() => this.doClick()}/>);
     }
 
     doClick()

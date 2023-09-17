@@ -4,11 +4,12 @@
 
 package strata.client.core.service;
 
-import javax.ws.rs.client.*;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedHashMap;
-import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.client.*;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.MultivaluedHashMap;
+import jakarta.ws.rs.core.MultivaluedMap;
+import jakarta.ws.rs.core.Response;
+
 import java.util.Map;
 import java.util.concurrent.CompletionStage;
 
@@ -22,18 +23,18 @@ class AbstractRestClient
 
     protected
     AbstractRestClient(
-        ClientBuilder      builder,
-        String             baseUrl,
-        String             endpointPath)
+        ClientBuilder builder,
+        String        baseUrl,
+        String        endpointPath)
     {
         this(builder,baseUrl,endpointPath,new StandardResponseProcessor());
     }
 
     protected
     AbstractRestClient(
-        Client             client,
-        String             baseUrl,
-        String             endpointPath)
+        Client client,
+        String baseUrl,
+        String endpointPath)
     {
         this(client,baseUrl,endpointPath,new StandardResponseProcessor());
     }
@@ -48,6 +49,7 @@ class AbstractRestClient
         itsClient =
                 builder
                     .register(new ObjectMapperProvider())
+                    //.register(new ObjectMapperContextResolver())
                     .build();
 
         itsBaseTarget = itsClient.target(initialize(baseUrl,endpointPath));
@@ -109,11 +111,7 @@ class AbstractRestClient
                 replyType,
                 toResponse(
                     methodPath,
-                    buildRequest(methodPath)
-                        .post(
-                            Entity.entity(
-                                request,
-                                MediaType.APPLICATION_JSON))));
+                    buildRequest(methodPath).post(Entity.json(request))));
     }
 
     protected <Request,Reply> Reply
@@ -175,10 +173,7 @@ class AbstractRestClient
         return
             buildRequest(methodPath)
                 .rx()
-                .post(
-                    Entity.entity(
-                        request,
-                        MediaType.APPLICATION_JSON))
+                .post(Entity.json(request))
                 .thenApply(
                     response ->
                         itsResponseProcessor.process(
@@ -272,7 +267,7 @@ class AbstractRestClient
     initialize(String baseUrl,String endpointPath)
     {
         return
-            baseUrl.endsWith("/" +endpointPath)
+            baseUrl.endsWith("/" + endpointPath)
                 ? baseUrl
                 : baseUrl + "/" + endpointPath;
     }

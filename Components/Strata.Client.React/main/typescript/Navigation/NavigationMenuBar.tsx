@@ -4,6 +4,7 @@ import {INavigationMenuBarPropertySet} from './INavigationMenuBarPropertySet';
 import {NavigationMenu} from './NavigationMenu';
 import {Navbar,NavbarGroup} from "@blueprintjs/core";
 import {Alignment} from "@blueprintjs/core/lib/esm/common/alignment";
+import Element = React.JSX.Element;
 
 export
 abstract class NavigationMenuBar
@@ -17,7 +18,7 @@ abstract class NavigationMenuBar
         this.menus = new Map<string,NavigationMenu>();
     }
 
-    render(): any
+    render(): Element
     {
         return (
             <Navbar>
@@ -27,12 +28,12 @@ abstract class NavigationMenuBar
         );
     }
 
-    register(menu:NavigationMenu)
+    register(menu:NavigationMenu): void
     {
         this.menus.set(menu.props.id,menu);
     }
 
-    onSelectionChange(selected:NavigationMenu)
+    onSelectionChange(selected:NavigationMenu): void
     {
         this
             .menus
@@ -44,7 +45,7 @@ abstract class NavigationMenuBar
                 });
     }
 
-    protected abstract renderLeft(): any;
+    protected abstract renderLeft(): Element;
 
-    protected abstract renderRight(): any;
+    protected abstract renderRight(): Element;
 }

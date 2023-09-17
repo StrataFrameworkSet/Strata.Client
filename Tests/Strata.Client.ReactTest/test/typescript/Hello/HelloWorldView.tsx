@@ -1,6 +1,6 @@
 import * as React from "react";
 import {IHelloWorldPresenter} from "./IHelloWorldPresenter";
-import {PresenterView} from "strata.client.react";
+import {PresenterView} from "strata.client.react/Presenter";
 import {IHelloWorldViewProperty} from "./IHelloWorldViewProperty";
 import {IHelloWorldView} from "./IHelloWorldView";
 import {Card} from "@blueprintjs/core";
@@ -10,6 +10,7 @@ import {handleStringChange} from "@blueprintjs/docs-theme";
 import {Label} from "@blueprintjs/core";
 import {Intent} from "@blueprintjs/core";
 import {IHelloWorldViewState} from "./IHelloWorldViewState";
+import Element = React.JSX.Element;
 import "./HelloWorldView.css";
 
 export
@@ -35,7 +36,7 @@ class HelloWorldView
         };
     }
 
-    render(): any
+    render(): Element
     {
         return (
             <Card>

@@ -1,6 +1,6 @@
 import {IMainModel} from "./IMainModel";
 import {IMainView} from "./IMainView";
-import {IPresenter} from "strata.client.core";
+import {IPresenter} from "strata.client.core/Presenter";
 import {IHelloWorldPresenter} from "../Hello/IHelloWorldPresenter";
 
 export

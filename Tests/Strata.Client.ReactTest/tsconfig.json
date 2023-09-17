@@ -5,15 +5,17 @@
         "sourceMap": true,
         "declaration": true,
         "outDir": "build/dist",
-        "jsx": "react"
+        "jsx": "react",
+        "allowSyntheticDefaultImports": true
     },
     "include": [
-        "main/typescript/**/*",
-        "main/typescript/typings/**/*"
+        "test/typescript/**/*",
+        "test/typescript/typings/**/*",
+        "test/typescript/**/*.css"
     ],
     "exclude": [
         "node_modules",
         "lib",
-        "Strata.Client.Core.iml"
+        "Strata.Client.ReactTest.iml"
     ]
 }

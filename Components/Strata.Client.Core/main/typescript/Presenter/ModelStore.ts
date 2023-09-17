@@ -1,8 +1,9 @@
 import {IModelStore} from "./IModelStore";
 import {IAction} from "./IAction";
 import {IUpdatable} from "./IUpdatable";
-import {ICompletionStage,IMultiMap} from 'strata.foundation.core';
-import {MultiMap} from 'strata.foundation.core';
+import {ICompletionStage} from 'strata.foundation.core/Concurrent';
+import {IMultiMap} from 'strata.foundation.core/Container';
+import {MultiMap} from 'strata.foundation.core/Container';
 
 export
 class ModelStore

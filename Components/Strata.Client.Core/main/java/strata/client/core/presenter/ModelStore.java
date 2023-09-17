@@ -4,8 +4,8 @@
 
 package strata.client.core.presenter;
 
-import strata.foundation.core.utility.IMultiMap;
-import strata.foundation.core.utility.MultiMap;
+import strata.foundation.core.container.IMultiMap;
+import strata.foundation.core.container.MultiMap;
 
 import java.util.Collection;
 import java.util.HashMap;

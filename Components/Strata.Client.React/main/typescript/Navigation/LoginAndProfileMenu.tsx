@@ -20,13 +20,13 @@ class LoginAndProfileMenu
         let className: string;
 
         if (this.state.selected)
-            className = "bp3-minimal menu-selected";
+            className = "bp5-minimal menu-selected";
         else
-            className = "bp3-minimal";
+            className = "bp5-minimal";
 
         return (
             <Popover
-                className="bp3-minimal"
+                className="bp5-minimal"
                 popoverClassName={Classes.POPOVER_DISMISS}
                 content={
                     <Menu className={Classes.POPOVER_DISMISS}>

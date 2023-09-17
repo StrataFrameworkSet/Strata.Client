@@ -1,4 +1,4 @@
-import {IMenuItemProps} from '@blueprintjs/core';
+import {MenuItemProps as IMenuItemProps} from '@blueprintjs/core';
 
 export
 interface IMenuItemLinkPropertySet

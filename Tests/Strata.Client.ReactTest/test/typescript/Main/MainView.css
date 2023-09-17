@@ -7,10 +7,15 @@
 img.logo {
     margin-right: 10px;
 }
+
 div.app-name {
     color: #48AFF0 !important;
     display: flex !important;
     align-items: center !important;
+}
+
+a.nav-menu {
+    margin-right: 10px;
 }
 
 a.menu-selected {
@@ -33,7 +38,7 @@ button.menu-selected:hover {
     text-underline-position: under;
 }
 
-.bp3-card {
+.bp5-card {
     height: calc(100vh - 40px - 40px);
     flex-grow: 1;
 }

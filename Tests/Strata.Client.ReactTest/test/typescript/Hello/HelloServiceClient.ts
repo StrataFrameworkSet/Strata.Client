@@ -1,8 +1,8 @@
 import {IHelloService} from "./IHelloService";
 import {SayHelloRequest} from "./SayHelloRequest";
 import {SayHelloReply} from "./SayHelloReply";
-import {ICompletionStage} from "strata.foundation.core";
-import {AbstractRestClient} from "strata.client.core";
+import {ICompletionStage} from "strata.foundation.core/Concurrent";
+import {AbstractRestClient} from "strata.client.core/Service";
 import {Guid} from "guid-typescript";
 
 export

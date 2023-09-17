@@ -2,7 +2,8 @@ import * as React from 'react';
 import {Component} from 'react';
 import {IRenderable} from "./IRenderable";
 import {IPresenterViewProperty} from "./IPresenterViewProperty";
-import {IPresentable} from "strata.client.core";
+import {IPresentable} from "strata.client.core/Presenter";
+import Element = React.JSX.Element
 
 export
 abstract class PresenterView<
@@ -23,7 +24,7 @@ abstract class PresenterView<
         this.props.presenter.setView(this.getSelf());
     }
 
-    abstract render(): any;
+    abstract render(): Element;
 
     protected abstract getSelf(): V;
 

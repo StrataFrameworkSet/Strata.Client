@@ -1,8 +1,8 @@
 import * as React from "react";
-import {IApplication} from "strata.client.core";
-import {ReactApplication} from 'strata.client.react';
-import {IModelStore} from 'strata.client.core';
-import {ModelStore} from 'strata.client.core';
+import {IApplication} from "strata.client.core/Main";
+import {ReactApplication} from 'strata.client.react/Main';
+import {IModelStore} from 'strata.client.core/Presenter';
+import {ModelStore} from 'strata.client.core/Presenter';
 import {HelloWorldModel} from "../Hello/HelloWorldModel";
 import {MainModel} from "./MainModel";
 import {MainView} from "./MainView";

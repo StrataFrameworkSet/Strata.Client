@@ -1,13 +1,16 @@
 plugins {
     id 'java-library'
+    id "com.github.node-gradle.node" version "6.0.0"
 }
 
 sourceSets {
     main.java.srcDirs = ['main/java']
     main.resources.srcDirs = ['main/resources']
+    test.java.srcDirs = ['unused']
 }
 
 apply plugin: 'maven-publish'
+apply plugin: "com.github.node-gradle.node"
 
 group 'strata.client'
 version "$major$minor$patch"
@@ -18,7 +21,7 @@ task sourceJar(type: Jar) {
 
 publishing {
     publications {
-        StrataFoundationChronicle(MavenPublication) {
+        StrataClientCore(MavenPublication) {
             artifactId = 'strata-client-core'
             from components.java
 
@@ -38,4 +41,6 @@ publishing {
 
 dependencies {
     api "strata.foundation:strata-foundation-core:$version"
+    api 'jakarta.ws.rs:jakarta.ws.rs-api:3.1.0'
+    api 'com.fasterxml.jackson.jakarta.rs:jackson-jakarta-rs-json-provider:2.15.2'
 }

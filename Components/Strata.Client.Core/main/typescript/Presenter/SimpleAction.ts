@@ -1,5 +1,5 @@
 import {IAction} from "./IAction";
-import {CompletableObservable,ICompletionStage} from "strata.foundation.core";
+import {CompletableObservable,ICompletionStage} from "strata.foundation.core/Concurrent";
 
 export
 class SimpleAction<M>

@@ -5,9 +5,10 @@ import {Component} from 'react';
 import {HomeView} from '../Home/HomeView';
 import {HelloWorldView} from "../Hello/HelloWorldView";
 import {IRouteSetProperty} from "./IRouteSetProperty";
-import {IHelloWorldView} from "../Hello/IHelloWorldView";
 import {HelpView} from "../Help/HelpView";
 import {IHelloWorldPresenter} from "../Hello/IHelloWorldPresenter";
+import Element = React.JSX.Element;
+
 
 export
 class RouteSet
@@ -18,7 +19,7 @@ class RouteSet
         super(prop);
     }
 
-    render()
+    render(): Element
     {
         let p: IHelloWorldPresenter =
             this

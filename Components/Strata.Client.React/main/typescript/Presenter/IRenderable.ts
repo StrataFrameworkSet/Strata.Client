@@ -1,5 +1,7 @@
+import Element = React.JSX.Element;
+
 export
 interface IRenderable
 {
-    render(): any;
+    render(): Element;
 }

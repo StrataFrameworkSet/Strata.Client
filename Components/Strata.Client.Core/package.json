@@ -1,21 +1,27 @@
 {
   "name": "strata.client.core",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "description": "",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "private": true,
+  "main": "build/dist/index.js",
+  "types": "build/dist/index.d.ts",
   "scripts": {
-    "install-strata.foundation.core": "npm install strata.foundation.core",
-    "clean": "del-cli -f ../../build/dist ./*.tgz",
-    "build": "npm run install-strata.foundation.core && tsc && npm pack",
+    "copy-package": "shx cp main/typescript/package.json build/dist/package.json",
+    "clean": "del-cli -f build/dist ./*.tgz",
+    "build": "yarn upgrade --pattern strata && tsc && cd main/typescript && yarn run increment-snapshot && cd ../.. && yarn run copy-package && cd build/dist && yarn pack",
+    "publish-package": "yarn run build && cd build/dist && yarn publish --non-interactive",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "guid-typescript": "^1.0.9",
     "rxjs": "^6.5.5",
-    "strata.foundation.core": "0.0.5",
+    "strata.foundation.core": "^0.0.0-snapshot.18",
     "typescript": "^5.1.6"
+  },
+  "devDependencies": {
+    "shx": "^0.3.4"
   }
 }

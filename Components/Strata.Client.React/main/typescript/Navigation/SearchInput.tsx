@@ -17,7 +17,7 @@ class SearchInput
     {
         return (
             <InputGroup
-                className="bp3-minimal"
+                className="bp5-minimal"
                 leftIcon="search"
                 placeholder="Search"
                 type="text"

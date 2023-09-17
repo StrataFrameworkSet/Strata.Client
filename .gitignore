@@ -83,3 +83,5 @@ APP_LOG_DIR_IS_UNDEFINED/
 *.*~
 *~
 .merge_file*
+**/*.tgz
+node_modules/

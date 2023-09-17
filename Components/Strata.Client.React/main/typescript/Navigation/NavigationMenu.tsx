@@ -2,6 +2,7 @@ import * as React from 'react';
 import {Component} from 'react';
 import {NavLink} from 'react-router-dom';
 import {INavigationMenuPropertySet} from './INavigationMenuPropertySet';
+import Element = React.JSX.Element;
 
 export
 class NavigationMenu
@@ -15,11 +16,11 @@ class NavigationMenu
             props.menubar.register(this);
     }
 
-    render()
+    render(): Element
     {
         return (
             <NavLink
-                className="bp3-button bp3-minimal"
+                className="bp5-button bp5-minimal nav-menu"
                 role="button"
                 activeClassName="menu-selected"
                 id={this.props.id}
@@ -27,13 +28,13 @@ class NavigationMenu
                 onClick={() => this.select()}>{this.props.text}</NavLink>);
      }
 
-     select()
+     select(): void
      {
          this.setState(() => ({selected:true}));
          this.props.menubar.onSelectionChange(this);
      }
 
-     unselect()
+     unselect(): void
      {
          this.setState(() => ({selected:false}));
      }

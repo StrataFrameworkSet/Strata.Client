@@ -1,4 +1,4 @@
-import {CompletableObservable,ICompletionStage} from "strata.foundation.core";
+import {CompletableObservable,ICompletionStage} from "strata.foundation.core/Concurrent";
 import {IResponseProcessor} from "./IResponseProcessor";
 import {StandardResponseProcessor} from "./StandardResponseProcessor";
 import {StandardResponse} from "./StandardResponse";

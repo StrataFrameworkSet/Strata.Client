@@ -1,4 +1,4 @@
-import {INavbarGroupProps} from '@blueprintjs/core';
+import {NavbarGroupProps as INavbarGroupProps} from '@blueprintjs/core';
 import {NavigationMenuBar} from './NavigationMenuBar';
 import {BrowserRouter} from 'react-router-dom';
 

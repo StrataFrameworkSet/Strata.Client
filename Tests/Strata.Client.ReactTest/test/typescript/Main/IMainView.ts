@@ -1,4 +1,4 @@
-import {IRenderable} from "strata.client.react";
+import {IRenderable} from "strata.client.react/Presenter";
 
 export
 interface IMainView

@@ -1,13 +1,13 @@
 import {IHelloWorldModel} from "./IHelloWorldModel";
-import {AbstractPresenter} from 'strata.client.core';
+import {AbstractPresenter} from 'strata.client.core/Presenter';
 import {IHelloWorldView} from "./IHelloWorldView";
-import {IModelStore} from 'strata.client.core';
+import {IModelStore} from 'strata.client.core/Presenter';
 import {IHelloWorldPresenter} from "./IHelloWorldPresenter";
-import {Action} from "strata.client.core";
+import {Action} from "strata.client.core/Presenter";
 import {HelloWorldModel} from "./HelloWorldModel";
 import {IHelloService} from "./IHelloService";
 import {HelloServiceClient} from "./HelloServiceClient";
-import {ICompletionStage} from "strata.foundation.core";
+import {ICompletionStage} from "strata.foundation.core/Concurrent";
 import {SayHelloRequest} from "./SayHelloRequest";
 
 export

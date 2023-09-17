@@ -1,5 +1,5 @@
 import {IAction} from "./IAction";
-import {ICompletionStage} from "strata.foundation.core";
+import {ICompletionStage} from "strata.foundation.core/Concurrent";
 
 export
 class Action<M>

@@ -1,19 +1,15 @@
 {
   "name": "strata.client.react",
-  "version": "0.0.2",
+  "version": "0.0.0",
   "description": "",
+  "private": true,
   "main": "build/dist/index.js",
   "types": "build/dist/index.d.ts",
   "scripts": {
-    "install-strata.foundation.core": "yarn add strata.foundation.core",
-    "install-strata.client.core": "yarn add file:../Strata.Client.Core/build/dist/strata.client.core-v0.0.2.tgz",
     "copy-package": "shx cp main/typescript/package.json build/dist/package.json",
     "clean": "del-cli -f build/dist ./*.tgz",
-    "build": "yarn run install-strata.client.core && tsc && yarn run copy-package && cd build/dist && yarn pack",
-    "publish-package": "cd build/dist && yarn publish",
-    "new-patch": "yarn version --patch",
-    "new-minor": "yarn version --minor",
-    "new-major": "yarn version --major",
+    "build": "yarn upgrade --pattern strata && tsc && cd main/typescript && yarn run increment-snapshot && cd ../.. && yarn run copy-package && cd build/dist && yarn pack",
+    "publish-package": "yarn run build && cd build/dist && yarn publish --non-interactive",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -33,8 +29,7 @@
     "react-dom": "^18.2.0",
     "react-router-dom": "^5.3.4",
     "rxjs": "^6.5.5",
-    "strata.client.core": "file:../Strata.Client.Core/build/dist/strata.client.core-v0.0.2.tgz",
-    "strata.foundation.core": "^0.0.6",
+    "strata.client.core": "^0.0.0-snapshot.2",
     "typescript": "^5.1.6"
   },
   "devDependencies": {

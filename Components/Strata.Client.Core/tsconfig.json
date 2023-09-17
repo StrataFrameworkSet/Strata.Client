@@ -1,14 +1,14 @@
 {
     "compilerOptions": {
         "module": "commonjs",
-        "target": "es2018",
+        "target": "ES2022",
         "sourceMap": true,
         "declaration": true,
-        "outDir": "../../build/dist"
+        "outDir": "build/dist"
     },
     "include": [
-        "**/*",
-        "typings/**/*"
+        "main/typescript/**/*",
+        "main/typescript/typings/**/*"
     ],
     "exclude": [
         "node_modules",

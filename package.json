@@ -1,0 +1,10 @@
+{
+    "name": "Strata.Client",
+    "private": true,
+    "scripts": {
+        "clean-components": "cd Components/Strata.Client.Core && yarn run clean",
+        "clean": "yarn run clean-components",
+        "build": "cd Components/Strata.Client.Core && yarn install && yarn run publish-package",
+        "test": "yarn run build"
+    }
+}

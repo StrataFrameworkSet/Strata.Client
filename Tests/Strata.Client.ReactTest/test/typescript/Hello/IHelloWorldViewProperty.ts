@@ -1,4 +1,4 @@
-import {IPresenterViewProperty} from "strata.client.react";
+import {IPresenterViewProperty} from "strata.client.react/Presenter";
 import {IHelloWorldPresenter} from "./IHelloWorldPresenter";
 
 export

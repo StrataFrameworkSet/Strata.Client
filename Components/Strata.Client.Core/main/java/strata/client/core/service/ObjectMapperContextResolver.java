@@ -2,22 +2,20 @@
 // ObjectMapperContextResolver.java
 //////////////////////////////////////////////////////////////////////////////
 
-package strata.foundation.core.mapper;
+package strata.client.core.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import org.apache.avro.specific.SpecificRecordBase;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.ext.ContextResolver;
+import jakarta.ws.rs.ext.Provider;
+import strata.foundation.core.mapper.ObjectMapperSupplier;
 
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.ext.ContextResolver;
-import javax.ws.rs.ext.Provider;
 
 @Provider
 @Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
 public
 class ObjectMapperContextResolver
     implements ContextResolver<ObjectMapper>
@@ -27,13 +25,7 @@ class ObjectMapperContextResolver
     public
     ObjectMapperContextResolver()
     {
-        mapper = new ObjectMapper();
-        mapper
-            .registerModule(new SimpleModule())
-            .registerModule(new JavaTimeModule())
-            .registerModule(new Jdk8Module())
-            .addMixIn(SpecificRecordBase.class,IExcludeAvroFieldsMixin.class)
-            .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+        mapper = new ObjectMapperSupplier().get();
     }
 
     @Override

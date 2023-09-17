@@ -3,12 +3,14 @@ import {
     INavigationMenuBarPropertySet,
     LoginAndProfileMenu,NavigationMenu,
     NavigationMenuBar,SearchInput
-} from "strata.client.react";
+} from "strata.client.react/Navigation";
 import {NavbarGroup} from "@blueprintjs/core";
 import {NavbarHeading} from "@blueprintjs/core";
 import {NavbarDivider} from "@blueprintjs/core";
 import {Alignment} from "@blueprintjs/core";
 import logo from "./logo.svg";
+import Element = React.JSX.Element;
+
 
 export
 class MainNavigationMenuBar
@@ -19,7 +21,7 @@ class MainNavigationMenuBar
         super(props);
     }
 
-    protected renderLeft(): any
+    protected renderLeft(): Element
     {
         return (
             <NavbarGroup align={Alignment.LEFT}>
@@ -33,7 +35,7 @@ class MainNavigationMenuBar
             </NavbarGroup>);
     }
 
-    protected renderRight(): any
+    protected renderRight(): Element
     {
         return (
             <NavbarGroup align={Alignment.RIGHT}>

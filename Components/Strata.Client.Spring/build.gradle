@@ -1,0 +1,47 @@
+plugins {
+    id 'java-library'
+    id "com.github.node-gradle.node" version "6.0.0"
+}
+
+sourceSets {
+    main.java.srcDirs = ['main/java']
+    main.resources.srcDirs = ['main/resources']
+    test.java.srcDirs = ['unused']
+}
+
+apply plugin: 'maven-publish'
+apply plugin: "com.github.node-gradle.node"
+
+group 'strata.client'
+version "$major$minor$patch"
+
+task sourceJar(type: Jar) {
+    from sourceSets.main.allJava
+}
+
+publishing {
+    publications {
+        StrataClientSpring(MavenPublication) {
+            artifactId = 'strata-client-spring'
+            from components.java
+
+            repositories {
+                maven {
+                    name "GitHubPackages"
+                    url "https://maven.pkg.github.com/StrataFrameworkSet/repository"
+                    credentials {
+                        username = "$System.env.REPOSITORY_USER"
+                        password = "$System.env.REPOSITORY_PASSWORD"
+                    }
+                }
+            }
+        }
+    }
+}
+
+dependencies {
+    api project(':Components:Strata.Client.Core')
+    api "org.springframework.boot:spring-boot-starter-web:$springboot_version"
+    api "org.springframework.boot:spring-boot-starter-webflux:$springboot_version"
+    api 'org.apache.httpcomponents.client5:httpclient5:5.2.1'
+}

@@ -29,20 +29,24 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = 'Strata.Server'
+rootProject.name = 'Strata.Client'
 
 // Components
-include 'Components:Strata.Server.Core'
-include 'Components:Strata.Server.Spring'
-include 'Components:Strata.Server.Reactor'
-include 'Components:Strata.Server.Helidon'
+include 'Components:Strata.Client.Core'
+include 'Components:Strata.Client.Spring'
+include 'Components:Strata.Client.RestEasy'
+include 'Components:Strata.Client.React'
 
 // Tests
-include 'Tests:Strata.Server.CoreTest'
-include 'Tests:Strata.Server.SpringTest'
-include 'Tests:Strata.Server.ReactorTest'
-include 'Tests:Strata.Server.HelidonTest'
-include 'Tests:Strata.Server.TestSuite'
-
-
+include 'Tests:Strata.Client.CoreTest'
+include 'Tests:Strata.Client.SpringTest'
+include 'Tests:Strata.Client.RestEasyTest'
+include 'Tests:Strata.Client.ReactTest'
+include 'Tests:Strata.Client.TestSuite'
+include 'Components:Strata.Client.React'
+findProject(':Components:Strata.Client.React')?.name = 'Strata.Client.React'
+include 'Tests:Strata.Client.ReactTest'
+findProject(':Tests:Strata.Client.ReactTest')?.name = 'Strata.Client.ReactTest'
+include 'Components:Strata.Client.Spring'
+findProject(':Components:Strata.Client.Spring')?.name = 'Strata.Client.Spring'
 

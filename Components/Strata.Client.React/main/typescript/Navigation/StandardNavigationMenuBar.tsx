@@ -6,7 +6,7 @@ import {NavigationMenu} from "./NavigationMenu";
 import {LoginAndProfileMenu} from "./LoginAndProfileMenu";
 import {SearchInput} from "./SearchInput";
 import {Alignment} from "@blueprintjs/core/lib/esm/common/alignment";
-
+import Element = React.JSX.Element;
 
 export
 class StandardNavigationMenuBar
@@ -17,7 +17,7 @@ class StandardNavigationMenuBar
         super(props);
     }
 
-    protected renderLeft(): any
+    protected renderLeft(): Element
     {
         return (
             <NavbarGroup align={Alignment.LEFT}>
@@ -32,7 +32,7 @@ class StandardNavigationMenuBar
             </NavbarGroup>);
     }
 
-    protected renderRight(): any
+    protected renderRight(): Element
     {
         return (
             <NavbarGroup align={Alignment.RIGHT}>

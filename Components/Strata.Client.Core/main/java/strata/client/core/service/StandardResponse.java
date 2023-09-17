@@ -4,8 +4,9 @@
 
 package strata.client.core.service;
 
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 
 public
 class StandardResponse
