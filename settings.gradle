@@ -49,4 +49,8 @@ include 'Tests:Strata.Client.ReactTest'
 findProject(':Tests:Strata.Client.ReactTest')?.name = 'Strata.Client.ReactTest'
 include 'Components:Strata.Client.Spring'
 findProject(':Components:Strata.Client.Spring')?.name = 'Strata.Client.Spring'
+include 'Components:Strata.Client.Mui'
+findProject(':Components:Strata.Client.Mui')?.name = 'Strata.Client.Mui'
+include 'Components:Strata.Client.Blueprint'
+findProject(':Components:Strata.Client.Blueprint')?.name = 'Strata.Client.Blueprint'
 

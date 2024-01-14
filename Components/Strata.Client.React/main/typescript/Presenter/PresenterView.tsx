@@ -19,7 +19,7 @@ abstract class PresenterView<
         super(props);
     }
 
-    componentWillMount(): void
+    componentDidMount(): void
     {
         this.props.presenter.setView(this.getSelf());
     }

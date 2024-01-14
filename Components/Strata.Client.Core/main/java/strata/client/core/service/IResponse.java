@@ -6,7 +6,10 @@ package strata.client.core.service;
 
 
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.MultivaluedMap;
 import jakarta.ws.rs.core.Response.Status;
+
+import java.util.Map;
 
 public
 interface IResponse
@@ -25,6 +28,9 @@ interface IResponse
 
     String
     getStatusReason();
+
+    MultivaluedMap<String,Object>
+    getHeaders();
 
     <E> E
     readEntity(Class<E> entityType);

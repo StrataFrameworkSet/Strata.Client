@@ -11,6 +11,7 @@ import jakarta.ws.rs.core.MultivaluedMap;
 import jakarta.ws.rs.core.Response;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.CompletionStage;
 
 public abstract
@@ -19,6 +20,7 @@ class AbstractRestClient
     private Client                        itsClient;
     private WebTarget                     itsBaseTarget;
     private MultivaluedMap<String,Object> itsHeaders;
+    private Optional<IHeadersConsumer>    itsConsumer;
     private IResponseProcessor            itsResponseProcessor;
 
     protected
@@ -54,6 +56,7 @@ class AbstractRestClient
 
         itsBaseTarget = itsClient.target(initialize(baseUrl,endpointPath));
         itsHeaders = new MultivaluedHashMap<>();
+        itsConsumer = Optional.empty();
         itsResponseProcessor = processor;
     }
 
@@ -67,6 +70,7 @@ class AbstractRestClient
         itsClient = client;
         itsBaseTarget = itsClient.target(initialize(baseUrl,endpointPath));
         itsHeaders = new MultivaluedHashMap<>();
+        itsConsumer = Optional.empty();
         itsResponseProcessor = processor;
     }
 
@@ -101,6 +105,12 @@ class AbstractRestClient
     close()
     {
         itsClient.close();
+    }
+
+    protected void
+    setHeadersConsumer(IHeadersConsumer consumer)
+    {
+        itsConsumer = Optional.ofNullable(consumer);
     }
 
     protected <Request,Reply> Reply
@@ -275,6 +285,8 @@ class AbstractRestClient
     private IResponse
     toResponse(String methodPath,Response response)
     {
+        itsConsumer.ifPresent(consumer -> consumer.accept(response.getHeaders()));
+
         return
             new StandardResponse(
                 itsBaseTarget.getUri().toString(),

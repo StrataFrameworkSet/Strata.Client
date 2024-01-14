@@ -6,7 +6,10 @@ package strata.client.core.service;
 
 
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.MultivaluedMap;
 import jakarta.ws.rs.core.Response;
+
+import java.util.Map;
 
 public
 class StandardResponse
@@ -55,6 +58,13 @@ class StandardResponse
     getStatusReason()
     {
         return itsResponse.getStatusInfo().getReasonPhrase();
+    }
+
+    @Override
+    public MultivaluedMap<String,Object>
+    getHeaders()
+    {
+        return itsResponse.getHeaders();
     }
 
     @Override

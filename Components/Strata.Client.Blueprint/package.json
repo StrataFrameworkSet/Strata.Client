@@ -1,5 +1,5 @@
 {
-  "name": "strata.client.react",
+  "name": "strata.client.blueprint",
   "version": "0.0.0",
   "description": "",
   "private": true,
@@ -15,17 +15,14 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "Apache-2.0",
   "dependencies": {
-    "@types/react": "^18.2.21",
-    "@types/react-dom": "^18.2.7",
-    "@types/react-router": "^5.1.19",
-    "@types/react-router-dom": "^5.3.2",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-router-dom": "^5.3.4",
-    "rxjs": "^6.5.5",
-    "strata.client.core": "^0.0.0-snapshot.65"
+    "@blueprintjs/core": "^5.2.1",
+    "@blueprintjs/datetime": "^5.0.9",
+    "@blueprintjs/icons": "^5.1.5",
+    "@blueprintjs/select": "^5.0.9",
+    "@blueprintjs/table": "^5.0.9",
+    "strata.client.react": "^0.0.0-snapshot.31"
   },
   "devDependencies": {
     "shx": "^0.3.4",

@@ -1,10 +1,10 @@
 import * as React from "react";
-import * as ReactDOM from 'react-dom';
 import {createRoot,Root} from "react-dom/client";
 import {AbstractApplication,IApplication} from "strata.client.core/Main";
 import {IPresenter} from "strata.client.core/Presenter";
-import {BrowserRouter} from 'react-router-dom';
 import {IRenderable} from "../Presenter/IRenderable";
+import Element = React.JSX.Element;
+import {BrowserRouter} from "react-router-dom";
 
 export
 abstract class ReactApplication<M,V extends IRenderable,P extends IPresenter<M,V>>
@@ -32,5 +32,5 @@ abstract class ReactApplication<M,V extends IRenderable,P extends IPresenter<M,V
         this.root.unmount()
     }
 
-    protected abstract getMainView(): any;
+    protected abstract getMainView(): Element;
 }

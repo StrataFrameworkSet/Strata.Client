@@ -1,6 +1,6 @@
 {
-    "name": "strata.client.core",
-    "version": "0.0.0-snapshot.66",
+    "name": "strata.client.mui",
+    "version": "0.0.0-snapshot.84",
     "license": "Apache-2.0",
     "scripts": {
         "increment-snapshot": "npm version prerelease",
@@ -9,8 +9,10 @@
         "increment-patch": "npm version patch"
     },
     "dependencies": {
-        "rxjs": "^6.5.5",
-        "strata.foundation.core": "^0.0.0-snapshot.28",
-        "guid-typescript": "^1.0.9"
+        "@emotion/react": "^11.11.1",
+        "@emotion/styled": "^11.11.0",
+        "@mui/icons-material": "^5.14.9",
+        "@mui/material": "^5.14.9",
+        "strata.client.react": "^0.0.0-snapshot.61"
     }
 }

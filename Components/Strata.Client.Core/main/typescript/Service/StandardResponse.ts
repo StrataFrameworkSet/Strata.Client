@@ -36,13 +36,16 @@ class StandardResponse
         return this.response.statusText;
     }
 
-    readEntity<E>(): Promise<E>
+    async readEntity<E>(): Promise<E>
     {
-        return this.response.json().then(value => <E>value);
+        return await
+            this
+                .response
+                .json()
+                .then((entity) => entity as E);
     }
 
     close(): void
     {
     }
-
 }

@@ -1,0 +1,19 @@
+{
+    "name": "strata.client.blueprint",
+    "version": "0.0.0-snapshot.46",
+    "license": "Apache-2.0",
+    "scripts": {
+        "increment-snapshot": "npm version prerelease",
+        "increment-major": "npm version major",
+        "increment-minor": "npm version minor",
+        "increment-patch": "npm version patch"
+    },
+    "dependencies": {
+        "@blueprintjs/core": "^5.2.1",
+        "@blueprintjs/datetime": "^5.0.9",
+        "@blueprintjs/icons": "^5.1.5",
+        "@blueprintjs/select": "^5.0.9",
+        "@blueprintjs/table": "^5.0.9",
+        "strata.client.react": "^0.0.0-snapshot.31"
+    }
+}

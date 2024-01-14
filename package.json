@@ -2,9 +2,17 @@
     "name": "Strata.Client",
     "private": true,
     "scripts": {
-        "clean-components": "cd Components/Strata.Client.Core && yarn run clean",
+        "clean-strata-client-core": "cd Components/Strata.Client.Core && yarn run clean",
+        "clean-strata-client-react": "cd Components/Strata.Client.React && yarn run clean",
+        "clean-strata-client-mui": "cd Components/Strata.Client.Mui && yarn run clean",
+        "clean-strata-client-blueprint": "cd Components/Strata.Client.Blueprint && yarn run clean",
+        "clean-components": "yarn run clean-strata-client-core && yarn run clean-strata-client-react && yarn run clean-strata-client-mui && yarn run clean-strata-client-blueprint",
         "clean": "yarn run clean-components",
-        "build": "cd Components/Strata.Client.Core && yarn install && yarn run publish-package",
+        "build-strata-client-core": "cd Components/Strata.Client.Core && yarn run publish-package",
+        "build-strata-client-react": "cd Components/Strata.Client.React && yarn run publish-package",
+        "build-strata-client-mui": "cd Components/Strata.Client.Mui && yarn run publish-package",
+        "build-strata-client-blueprint": "cd Components/Strata.Client.Blueprint && yarn run publish-package",
+        "build": "yarn run clean && yarn run build-strata-client-core && yarn run build-strata-client-react && yarn run build-strata-client-mui && yarn run build-strata-client-blueprint",
         "test": "yarn run build"
     }
 }
