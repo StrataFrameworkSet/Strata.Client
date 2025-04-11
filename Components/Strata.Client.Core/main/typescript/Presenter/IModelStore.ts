@@ -12,6 +12,8 @@ interface IModelStore
 
     remove(key: string): IModelStore;
 
+    getModel<M>(key: string): M;
+
     hasUpdatable(key: string): boolean;
 
     hasModel(key: string): boolean;

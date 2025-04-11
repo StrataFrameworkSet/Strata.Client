@@ -1,6 +1,8 @@
 import {IUpdatable} from "./IUpdatable";
 import {IModelStore} from "./IModelStore";
 import {IAction} from "./IAction";
+import {ICompletionStage} from "strata.foundation.core/Concurrent";
+import {Action} from "./Action";
 
 export
 abstract class AbstractUpdatable<M>
@@ -44,9 +46,16 @@ abstract class AbstractUpdatable<M>
 
     abstract update(model: M): void;
 
-    protected dispatch<M>(action: IAction<M>)
+    protected dispatch(action: (m: M) => ICompletionStage<M>): void
+    {
+        this.dispatchAction(
+            new Action<M>(
+                this.getKey(),
+                action as (m: M) => ICompletionStage<M>));
+    }
+
+    protected dispatchAction(action: IAction<M>): void
     {
         this.modelstore.apply(action);
     }
-
 }

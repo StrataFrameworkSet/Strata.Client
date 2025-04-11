@@ -14,5 +14,8 @@
         "build-strata-client-blueprint": "cd Components/Strata.Client.Blueprint && yarn run publish-package",
         "build": "yarn run clean && yarn run build-strata-client-core && yarn run build-strata-client-react && yarn run build-strata-client-mui && yarn run build-strata-client-blueprint",
         "test": "yarn run build"
+    },
+    "dependencies": {
+        "del-cli": "^6.0.0"
     }
 }

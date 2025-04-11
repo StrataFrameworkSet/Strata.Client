@@ -23,14 +23,14 @@ import MenuItemLink from "./MenuItemLink";
 
 export
 abstract class NavigationMenuBar
-    extends Component<INavigationMenuBarPropertySet,INavigationMenuBarState>
+    extends Component<INavigationMenuBarPropertySet & any,INavigationMenuBarState>
 {
     private links: Map<string,Array<NavigationLink>>;
     private readonly menuContainerHolder: Holder<HamburgerMenuContainer>;
     private readonly groupContainerHolder: Holder<NavigationLinkGroupContainer>;
     private hamburgerMenu : HamburgerMenu;
 
-    protected constructor(props: INavigationMenuBarPropertySet)
+    protected constructor(props: INavigationMenuBarPropertySet & any)
     {
         super(props);
         this.links = new Map<string,Array<NavigationLink>>();

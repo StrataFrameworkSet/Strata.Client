@@ -4,6 +4,7 @@ import {Component,RefObject} from 'react';
 import {NavLink} from 'react-router-dom';
 import {INavigationLinkPropertySet} from './INavigationLinkPropertySet';
 import {NavigationLinkGroup} from "./NavigationLinkGroup";
+import {INavigationMenuBarPropertySet} from "./INavigationMenuBarPropertySet";
 
 export
 class NavigationLink

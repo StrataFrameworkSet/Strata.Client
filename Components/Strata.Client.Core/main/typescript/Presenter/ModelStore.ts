@@ -50,6 +50,13 @@ class ModelStore
         return this;
     }
 
+    getModel<M>(key: string): M
+    {
+        return this.hasModel(key)
+            ? this.models.get(key) as M
+            : null;
+    }
+
     hasUpdatable(key: string): boolean
     {
         return this.updatables.containsKey(key);

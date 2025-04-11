@@ -27,6 +27,12 @@ abstract class AbstractRestClient
 
     protected setHeader(headerKey: string,headerValue: string): AbstractRestClient
     {
+        this.headers.set(headerKey,headerValue);
+        return this;
+    }
+
+    protected appendHeader(headerKey: string,headerValue: string): AbstractRestClient
+    {
         this.headers.append(headerKey,headerValue);
         return this;
     }

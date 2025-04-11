@@ -4,6 +4,8 @@
 
 package strata.client.core.presenter;
 
+import java.util.Optional;
+
 public
 interface IModelStore
 {
@@ -18,6 +20,9 @@ interface IModelStore
 
     <M> IModelStore
     remove(Class<M> key);
+
+    <M> Optional<M>
+    getModel(Class<M> key);
 
     <M> boolean
     hasUpdatable(Class<M> key);

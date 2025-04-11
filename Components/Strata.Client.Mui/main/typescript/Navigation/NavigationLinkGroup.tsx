@@ -5,6 +5,7 @@ import {Box} from "@mui/material";
 import {INavigationLinkGroupPropertySet} from "./INavigationLinkGroupPropertySet";
 import {INavigationLinkGroupState} from "./INavigationLinkGroupState";
 import {NavigationLink} from "./NavigationLink";
+import {INavigationMenuBarPropertySet} from "./INavigationMenuBarPropertySet";
 
 export
 class NavigationLinkGroup

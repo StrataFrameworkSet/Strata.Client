@@ -3,6 +3,7 @@ import {NavigationMenuBar} from './NavigationMenuBar';
 import {BrowserRouter} from 'react-router-dom';
 import {NavigationLinkGroup} from "./NavigationLinkGroup";
 import {ISupplier} from "strata.foundation.core/Utility";
+import {INavigationMenuBarPropertySet} from "./INavigationMenuBarPropertySet";
 
 export
 interface INavigationLinkPropertySet

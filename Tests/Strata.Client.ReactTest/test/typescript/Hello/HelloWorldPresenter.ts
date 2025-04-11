@@ -33,10 +33,7 @@ class HelloWorldPresenter
         let name: string = this.getView().getName();
         let greeting: string = this.getView().getGreeting();
 
-        this.dispatch(
-            new Action<IHelloWorldModel>(
-                this.getKey(),
-                model => this.changeModel(model,name,greeting)));
+        this.dispatch((model: IHelloWorldModel) => this.changeModel(model,name,greeting));
     }
 
     exit(): void

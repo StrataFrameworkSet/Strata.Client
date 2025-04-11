@@ -4,6 +4,9 @@
 
 package strata.client.core.presenter;
 
+import java.util.concurrent.CompletionStage;
+import java.util.function.Function;
+
 public abstract
 class AbstractUpdatable<M>
     implements IUpdatable<M>
@@ -46,6 +49,12 @@ class AbstractUpdatable<M>
     getKey()
     {
         return itsKey;
+    }
+
+    protected void
+    dispatch(Function<M,CompletionStage<M>> action)
+    {
+        dispatch(new Action<>(getKey(),action));
     }
 
     protected void

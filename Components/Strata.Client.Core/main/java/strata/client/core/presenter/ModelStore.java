@@ -10,6 +10,7 @@ import strata.foundation.core.container.MultiMap;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.CompletionStage;
 
 public
@@ -67,6 +68,16 @@ class ModelStore
     }
 
     @Override
+    public <M> Optional<M>
+    getModel(Class<M> key)
+    {
+        return
+            hasModel(key)
+                ? Optional.of(key.cast(itsModels.get(key)))
+                : Optional.empty();
+    }
+
+    @Override
     public <M> boolean
     hasUpdatable(Class<M> key)
     {
@@ -77,7 +88,12 @@ class ModelStore
     public <M> boolean
     hasModel(Class<M> key)
     {
-        return itsModels.containsKey(key);
+        return
+            itsModels.containsKey(key) &&
+            key.isAssignableFrom(
+                itsModels
+                    .get(key)
+                    .getClass());
     }
 
     @Override
@@ -117,6 +133,7 @@ class ModelStore
                 });
 
     }
+
 }
 
 //////////////////////////////////////////////////////////////////////////////

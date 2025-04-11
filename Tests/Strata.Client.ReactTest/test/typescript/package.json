@@ -3,7 +3,7 @@
     "version": "0.0.0-snapshot.12",
     "license": "Apache-2.0",
     "scripts": {
-        "increment-snapshot": "npm version prerelease",
+        "increment-snapshot": "npm-prerelease-timestamp -v 0.0.0",
         "increment-major": "npm version major",
         "increment-minor": "npm version minor",
         "increment-patch": "npm version patch"
