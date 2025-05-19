@@ -4,7 +4,8 @@
 
 package strata.client.core.inject;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
+
 import java.util.Properties;
 
 public

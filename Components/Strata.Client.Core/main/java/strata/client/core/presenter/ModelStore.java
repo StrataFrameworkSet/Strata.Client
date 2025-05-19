@@ -108,29 +108,28 @@ class ModelStore
         replace(key,updated,model,updatables);
     }
 
+    @SuppressWarnings("unchecked")
     private <M> void
     replace(
-        Class<M>                  key,
-        CompletionStage<M>        updated,
-        M                         previous,
+        Class<M> key,
+        CompletionStage<M> updated,
+        M previous,
         Collection<IUpdatable<?>> updatables)
     {
         updated
             .thenApply(
                 current ->
-                {
+                    {
                     itsModels.remove(key,previous);
                     itsModels.put(key,current);
                     return current;
-                })
+                    })
             .thenAccept(
                 current ->
-                {
                     updatables
                         .stream()
                         .map(updatable -> (IUpdatable<M>)updatable)
-                        .forEach(updatable -> updatable.update(current));
-                });
+                        .forEach(updatable -> updatable.update(current)));
 
     }
 

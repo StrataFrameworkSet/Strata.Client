@@ -4,7 +4,7 @@
 
 package strata.client.core.inject;
 
-import javax.inject.Provider;
+import jakarta.inject.Provider;
 
 public
 interface IBaseUrlProvider
