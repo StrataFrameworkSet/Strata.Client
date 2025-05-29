@@ -25,41 +25,46 @@ abstract class AbstractRestClient
                 : responseProcessor;
     }
 
-    protected setHeader(headerKey: string,headerValue: string): AbstractRestClient
+    public setHeader(headerKey: string,headerValue: string): AbstractRestClient
     {
         this.headers.set(headerKey,headerValue);
         return this;
     }
 
-    protected appendHeader(headerKey: string,headerValue: string): AbstractRestClient
+    public appendHeader(headerKey: string,headerValue: string): AbstractRestClient
     {
         this.headers.append(headerKey,headerValue);
         return this;
     }
 
-    protected clearHeader(headerKey: string): AbstractRestClient
+    public clearHeader(headerKey: string): AbstractRestClient
     {
         this.headers.delete(headerKey);
         return this;
     }
 
-    protected clearHeaders(): AbstractRestClient
+    public clearHeaders(): AbstractRestClient
     {
         this.headers = new Headers();
         return this;
     }
 
-    protected getHeader(headerKey: string): string
+    public getHeaderKeys(): HeadersIterator<string>
+    {
+        return this.headers.keys()
+    }
+
+    public getHeader(headerKey: string): string
     {
         return this.headers.get(headerKey);
     }
 
-    protected hasHeader(headerKey: string): boolean
+    public hasHeader(headerKey: string): boolean
     {
         return this.headers.has(headerKey);
     }
 
-    protected setHeadersConsumer(consumer: IHeadersConsumer): void
+    public setHeadersConsumer(consumer: IHeadersConsumer): void
     {
         this.consumer = consumer;
     }

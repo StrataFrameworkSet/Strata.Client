@@ -10,8 +10,10 @@ import jakarta.ws.rs.core.MultivaluedHashMap;
 import jakarta.ws.rs.core.MultivaluedMap;
 import jakarta.ws.rs.core.Response;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.CompletionStage;
 
 public abstract
@@ -95,6 +97,18 @@ class AbstractRestClient
         return this;
     }
 
+    public Set<String>
+    getHeaderKeys()
+    {
+        return itsHeaders.keySet();
+    }
+
+    public List<Object>
+    getHeader(String headerKey)
+    {
+        return itsHeaders.get(headerKey);
+    }
+
     public boolean
     hasHeader(String headerKey)
     {
@@ -107,7 +121,7 @@ class AbstractRestClient
         itsClient.close();
     }
 
-    protected void
+    public void
     setHeadersConsumer(IHeadersConsumer consumer)
     {
         itsConsumer = Optional.ofNullable(consumer);
