@@ -275,6 +275,9 @@ class CustomerView
     extends PresenterView<ICustomerView, ICustomerPresenter, ICustomerViewProperty>
     implements ICustomerView
 {
+    private itsCustomerName: string = "";
+    private itsCustomerEmail: string = "";
+
     constructor(props: ICustomerViewProperty)
     {
         super(props);
@@ -282,17 +285,27 @@ class CustomerView
 
     render(): Element
     {
-        const model = this.props.presenter.getModel();
-        
         return (
             <div className="customer-container">
-                <h1>{model?.name || 'Loading...'}</h1>
-                <p>{model?.email}</p>
+                <h1>{this.itsCustomerName || 'Loading...'}</h1>
+                <p>{this.itsCustomerEmail}</p>
                 <button onClick={() => this.handleRefresh()}>
                     Refresh
                 </button>
             </div>
         );
+    }
+
+    setCustomerName(name: string): void
+    {
+        this.itsCustomerName = name;
+        this.forceUpdate();
+    }
+
+    setCustomerEmail(email: string): void
+    {
+        this.itsCustomerEmail = email;
+        this.forceUpdate();
     }
 
     protected
@@ -304,7 +317,7 @@ class CustomerView
     private
     handleRefresh(): void
     {
-        this.props.presenter.refresh();
+        this.props.presenter.refreshCustomer();
     }
 }
 ```
@@ -325,6 +338,9 @@ class CustomerFormView
     extends PresenterView<ICustomerFormView, ICustomerFormPresenter, ICustomerFormViewProperty>
     implements ICustomerFormView
 {
+    private itsCustomerName: string = "";
+    private itsCustomerEmail: string = "";
+
     constructor(props: ICustomerFormViewProperty)
     {
         super(props);
@@ -332,8 +348,6 @@ class CustomerFormView
 
     render(): Element
     {
-        const model = this.props.presenter.getModel();
-        
         return (
             <Paper elevation={2} style={{padding: 16}}>
                 <TextField
@@ -341,7 +355,7 @@ class CustomerFormView
                     variant="outlined"
                     fullWidth
                     margin="normal"
-                    value={model?.name || ''}
+                    value={this.itsCustomerName}
                     onChange={(event) => this.handleNameChange(event.target.value)}
                 />
                 <TextField
@@ -350,11 +364,11 @@ class CustomerFormView
                     fullWidth
                     margin="normal"
                     type="email"
-                    value={model?.email || ''}
+                    value={this.itsCustomerEmail}
                     onChange={(event) => this.handleEmailChange(event.target.value)}
                 />
                 <Button 
-                    variant="contained" 
+                    variant="contained"
                     color="primary"
                     onClick={() => this.handleSave()}
                 >
@@ -362,6 +376,28 @@ class CustomerFormView
                 </Button>
             </Paper>
         );
+    }
+
+    setCustomerName(name: string): void
+    {
+        this.itsCustomerName = name;
+        this.forceUpdate();
+    }
+
+    setCustomerEmail(email: string): void
+    {
+        this.itsCustomerEmail = email;
+        this.forceUpdate();
+    }
+
+    getCustomerName(): string
+    {
+        return this.itsCustomerName;
+    }
+
+    getCustomerEmail(): string
+    {
+        return this.itsCustomerEmail;
     }
 
     protected
@@ -373,19 +409,149 @@ class CustomerFormView
     private
     handleNameChange(name: string): void
     {
-        this.props.presenter.updateName(name);
+        this.itsCustomerName = name;
+        this.forceUpdate();
     }
 
     private
     handleEmailChange(email: string): void
     {
-        this.props.presenter.updateEmail(email);
+        this.itsCustomerEmail = email;
+        this.forceUpdate();
     }
 
     private
     handleSave(): void
     {
         this.props.presenter.saveCustomer();
+    }
+}
+```
+
+### TypeScript Presenter with Dispatched Actions
+
+```typescript
+import {AbstractPresenter} from 'strata.client.core/Presenter';
+import {IModelStore} from 'strata.client.core/Presenter';
+import {Action} from 'strata.client.core/Presenter';
+import {ICompletionStage} from 'strata.foundation.core/concurrent';
+import {ICustomerService} from "../service/ICustomerService";
+import {CustomerRestClient} from "../service/CustomerRestClient";
+
+export
+class CustomerPresenter
+    extends AbstractPresenter<ICustomerModel, ICustomerView>
+    implements ICustomerPresenter
+{
+    private itsService: ICustomerService;
+
+    constructor(modelStore?: IModelStore)
+    {
+        super("Customer", modelStore);
+        this.itsService = new CustomerRestClient("https://localhost:8080/customer-service");
+    }
+
+    protected
+    doUpdate(view: ICustomerView, model: ICustomerModel): void
+    {
+        view.setCustomerName(model.getName());
+        view.setCustomerEmail(model.getEmail());
+    }
+
+    saveCustomer(): void
+    {
+        let name: string = this.getView().getCustomerName();
+        let email: string = this.getView().getCustomerEmail();
+
+        this.dispatch(
+            new Action<ICustomerModel>(
+                this.getKey(),
+                model => this.changeModel(model, name, email)));
+    }
+
+    refreshCustomer(): void
+    {
+        let customerId: string = this.getView().getCustomerId();
+
+        this.dispatch(
+            new Action<ICustomerModel>(
+                this.getKey(),
+                model => this.loadCustomer(model, customerId)));
+    }
+
+    private
+    changeModel(
+        model: ICustomerModel,
+        name: string,
+        email: string): ICompletionStage<ICustomerModel>
+    {
+        const request: SaveCustomerRequest =
+            new SaveCustomerRequestBuilder()
+                .setName(name)
+                .setEmail(email)
+                .build();
+
+        console.log("CustomerPresenter.changeModel");
+        return this
+            .itsService
+            .saveCustomerAsync(request)
+            .thenApply(
+                (customer: Customer) =>
+                {
+                    const updatedModel: ICustomerModel =
+                        new CustomerModel()
+                            .setName(customer.name)
+                            .setEmail(customer.email)
+                            .setId(customer.id);
+
+                    console.log("Customer saved successfully: " + JSON.stringify(customer));
+                    return updatedModel;
+                })
+            .exceptionally(
+                (error: Error) =>
+                {
+                    const errorModel: ICustomerModel =
+                        new CustomerModel()
+                            .setName(name)
+                            .setEmail(email)
+                            .setErrorMessage(error.message);
+
+                    console.log("Save customer failed: " + error.message);
+                    return errorModel;
+                });
+    }
+
+    private
+    loadCustomer(
+        model: ICustomerModel,
+        customerId: string): ICompletionStage<ICustomerModel>
+    {
+        console.log("CustomerPresenter.loadCustomer");
+        return this
+            .itsService
+            .getCustomerAsync(customerId)
+            .thenApply(
+                (customer: Customer) =>
+                {
+                    const loadedModel: ICustomerModel =
+                        new CustomerModel()
+                            .setName(customer.name)
+                            .setEmail(customer.email)
+                            .setId(customer.id);
+
+                    console.log("Customer loaded successfully: " + JSON.stringify(customer));
+                    return loadedModel;
+                })
+            .exceptionally(
+                (error: Error) =>
+                {
+                    const errorModel: ICustomerModel =
+                        new CustomerModel()
+                            .setErrorMessage("Failed to load customer: " + error.message);
+
+                    console.log("Load customer failed: " + error.message);
+                    return errorModel;
+                });
     }
 }
 ```
