@@ -702,6 +702,8 @@ We welcome contributions to the Strata.Client project! Please follow these guide
 - Maintain consistent indentation and formatting
 - Write comprehensive unit tests for new functionality
 - Follow MVP architectural patterns consistently
+- **Interface Naming**: Prefix all interfaces with "I" (e.g., `IPresenter`, `IModelStore`, `ICustomerService`)
+- **Method Chaining**: Setters should return reference to "this" to enable fluent method chaining
 
 ## License
 
