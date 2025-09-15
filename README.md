@@ -181,39 +181,41 @@ repositories {
 import strata.client.core.presenter.IPresenter;
 import strata.client.core.presenter.IModelStore;
 import strata.client.core.presenter.ModelStore;
+import strata.client.core.presenter.AbstractPresenter;
 
-// Define your presenter
-public class CustomerPresenter implements IPresenter<CustomerModel, CustomerView> {
-    private final CustomerView view;
-    private final IModelStore modelStore;
-
-    public CustomerPresenter(CustomerView view, IModelStore modelStore) {
-        this.view = view;
-        this.modelStore = modelStore;
+// Define your presenter extending AbstractPresenter
+public class CustomerPresenter 
+    extends AbstractPresenter<CustomerModel, CustomerView>
+    implements IPresenter<CustomerModel, CustomerView>
+{
+    public
+    CustomerPresenter(
+        IModelStore modelStore)
+    {
+        super(modelStore, CustomerModel.class);
+        setView(new CustomerView());
     }
 
     @Override
-    public CustomerView getView() {
-        return view;
+    public void
+    start()
+    {
+        super.start();
+        getView().initialize();
     }
 
     @Override
-    public void start() {
-        // Initialize presenter and bind to model store
-        modelStore.attach(this);
-        view.initialize();
+    public void
+    stop()
+    {
+        getView().cleanup();
+        super.stop();
     }
 
     @Override
-    public void stop() {
-        // Cleanup presenter and detach from model store
-        modelStore.detach(this);
-        view.cleanup();
-    }
-
-    @Override
-    public void update(CustomerModel model) {
-        // React to model changes
+    protected void
+    doUpdate(CustomerView view, CustomerModel model)
+    {
         view.updateDisplay(model);
     }
 }
@@ -222,80 +224,125 @@ public class CustomerPresenter implements IPresenter<CustomerModel, CustomerView
 ### TypeScript MVP Implementation
 
 ```typescript
-import { IPresenter, IModelStore, IUpdatable } from 'strata.client.core';
+import {IPresenter} from 'strata.client.core/Presenter';
+import {IModelStore} from 'strata.client.core/Presenter';
+import {AbstractPresenter} from 'strata.client.core/Presenter';
 
-class CustomerPresenter implements IPresenter<CustomerModel, CustomerView> {
+export
+class CustomerPresenter
+    extends AbstractPresenter<CustomerModel, CustomerView>
+    implements IPresenter<CustomerModel, CustomerView>
+{
     constructor(
-        private view: CustomerView,
-        private modelStore: IModelStore
-    ) {}
-
-    getView(): CustomerView {
-        return this.view;
+        modelStore: IModelStore)
+    {
+        super(modelStore, "Customer");
+        this.setView(new CustomerView());
     }
 
-    start(): void {
-        this.modelStore.attach(this);
-        this.view.initialize();
+    start(): void
+    {
+        super.start();
+        this.getView().initialize();
     }
 
-    stop(): void {
-        this.modelStore.detach(this);
-        this.view.cleanup();
+    stop(): void
+    {
+        this.getView().cleanup();
+        super.stop();
     }
 
-    update(model: CustomerModel): void {
-        this.view.updateDisplay(model);
+    protected
+    doUpdate(view: CustomerView, model: CustomerModel): void
+    {
+        view.updateDisplay(model);
     }
 }
 ```
 
-### React Integration
+### React Class Component Integration
 
 ```typescript
-import React, { useEffect } from 'react';
-import { usePresenter, useModelStore } from 'strata.client.react';
+import * as React from "react";
+import {PresenterView} from "strata.client.react/Presenter";
+import {ICustomerPresenter} from "./ICustomerPresenter";
+import {ICustomerView} from "./ICustomerView";
+import {ICustomerViewProperty} from "./ICustomerViewProperty";
+import Element = React.JSX.Element;
 
-interface CustomerComponentProps {
-    presenter: IPresenter<CustomerModel, CustomerView>;
+export
+class CustomerView
+    extends PresenterView<ICustomerView, ICustomerPresenter, ICustomerViewProperty>
+    implements ICustomerView
+{
+    constructor(props: ICustomerViewProperty)
+    {
+        super(props);
+    }
+
+    render(): Element
+    {
+        const model = this.props.presenter.getModel();
+        
+        return (
+            <div className="customer-container">
+                <h1>{model?.name || 'Loading...'}</h1>
+                <p>{model?.email}</p>
+                <button onClick={() => this.handleRefresh()}>
+                    Refresh
+                </button>
+            </div>
+        );
+    }
+
+    protected
+    getSelf(): ICustomerView
+    {
+        return this;
+    }
+
+    private
+    handleRefresh(): void
+    {
+        this.props.presenter.refresh();
+    }
 }
-
-const CustomerComponent: React.FC<CustomerComponentProps> = ({ presenter }) => {
-    const [model, setModel] = useModelStore<CustomerModel>(CustomerModel);
-    const [isStarted, setIsStarted] = usePresenter(presenter);
-
-    useEffect(() => {
-        if (isStarted) {
-            presenter.start();
-        }
-        return () => presenter.stop();
-    }, [isStarted, presenter]);
-
-    return (
-        <div>
-            <h1>{model?.name || 'Loading...'}</h1>
-            <p>{model?.email}</p>
-        </div>
-    );
-};
 ```
 
-### Material-UI Integration
+### Material-UI Class Component Integration
 
 ```typescript
-import React from 'react';
-import { Button, TextField, Paper } from '@mui/material';
-import { MvpFormComponent } from 'strata.client.mui';
+import * as React from "react";
+import {Button, TextField, Paper} from '@mui/material';
+import {PresenterView} from "strata.client.react/Presenter";
+import {ICustomerFormPresenter} from "./ICustomerFormPresenter";
+import {ICustomerFormView} from "./ICustomerFormView";
+import {ICustomerFormViewProperty} from "./ICustomerFormViewProperty";
+import Element = React.JSX.Element;
 
-const CustomerForm: React.FC = () => {
-    return (
-        <MvpFormComponent>
-            <Paper elevation={2} style={{ padding: 16 }}>
+export
+class CustomerFormView
+    extends PresenterView<ICustomerFormView, ICustomerFormPresenter, ICustomerFormViewProperty>
+    implements ICustomerFormView
+{
+    constructor(props: ICustomerFormViewProperty)
+    {
+        super(props);
+    }
+
+    render(): Element
+    {
+        const model = this.props.presenter.getModel();
+        
+        return (
+            <Paper elevation={2} style={{padding: 16}}>
                 <TextField
                     label="Customer Name"
                     variant="outlined"
                     fullWidth
                     margin="normal"
+                    value={model?.name || ''}
+                    onChange={(event) => this.handleNameChange(event.target.value)}
                 />
                 <TextField
                     label="Email Address"
@@ -303,46 +350,202 @@ const CustomerForm: React.FC = () => {
                     fullWidth
                     margin="normal"
                     type="email"
+                    value={model?.email || ''}
+                    onChange={(event) => this.handleEmailChange(event.target.value)}
                 />
-                <Button variant="contained" color="primary">
+                <Button 
+                    variant="contained" 
+                    color="primary"
+                    onClick={() => this.handleSave()}
+                >
                     Save Customer
                 </Button>
             </Paper>
-        </MvpFormComponent>
-    );
-};
+        );
+    }
+
+    protected
+    getSelf(): ICustomerFormView
+    {
+        return this;
+    }
+
+    private
+    handleNameChange(name: string): void
+    {
+        this.props.presenter.updateName(name);
+    }
+
+    private
+    handleEmailChange(email: string): void
+    {
+        this.props.presenter.updateEmail(email);
+    }
+
+    private
+    handleSave(): void
+    {
+        this.props.presenter.saveCustomer();
+    }
+}
 ```
 
 ### Spring REST Client Integration
 
 ```java
-import strata.client.spring.service.AbstractSpringRestClient;
-import org.springframework.web.reactive.function.client.WebClient;
+import strata.client.core.service.AbstractRestClient;
+import javax.ws.rs.client.ClientBuilder;
+import javax.net.ssl.SSLContext;
+import org.apache.http.ssl.SSLContextBuilder;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import java.util.concurrent.CompletionStage;
 
-public class CustomerRestClient extends AbstractSpringRestClient {
-    private final WebClient webClient;
-
-    public CustomerRestClient(WebClient webClient) {
-        this.webClient = webClient;
+public
+class CustomerRestClient
+    extends AbstractRestClient
+    implements ICustomerService
+{
+    public
+    CustomerRestClient(String baseUrl)
+    {
+        super(
+            createBuilder(),
+            preprocessBaseUrl(baseUrl),
+            "customer-service/");
     }
 
-    public CompletableFuture<Customer> getCustomer(String customerId) {
-        return webClient
-            .get()
-            .uri("/api/customers/{id}", customerId)
-            .retrieve()
-            .bodyToMono(Customer.class)
-            .toFuture();
+    @Override
+    public Customer
+    getCustomerSync(String customerId)
+    {
+        return
+            doGetAsync("customers/" + customerId, Customer.class)
+                .toCompletableFuture()
+                .join();
     }
 
-    public CompletableFuture<Customer> saveCustomer(Customer customer) {
-        return webClient
-            .post()
-            .uri("/api/customers")
-            .bodyValue(customer)
-            .retrieve()
-            .bodyToMono(Customer.class)
-            .toFuture();
+    @Override
+    public CompletionStage<Customer>
+    getCustomerAsync(String customerId)
+    {
+        return
+            doGetAsync("customers/" + customerId, Customer.class);
+    }
+
+    @Override
+    public Customer
+    saveCustomerSync(SaveCustomerRequest request)
+    {
+        return
+            doPostAsync("customers", Customer.class, request)
+                .toCompletableFuture()
+                .join();
+    }
+
+    @Override
+    public CompletionStage<Customer>
+    saveCustomerAsync(SaveCustomerRequest request)
+    {
+        return
+            doPostAsync("customers", Customer.class, request);
+    }
+
+    @Override
+    public void
+    deleteCustomerSync(String customerId)
+    {
+        doDeleteAsync("customers/" + customerId, Void.class)
+            .toCompletableFuture()
+            .join();
+    }
+
+    @Override
+    public CompletionStage<Void>
+    deleteCustomerAsync(String customerId)
+    {
+        return
+            doDeleteAsync("customers/" + customerId, Void.class);
+    }
+
+    private static String
+    preprocessBaseUrl(String baseUrl)
+    {
+        return
+            baseUrl.endsWith("/")
+                ? baseUrl
+                : baseUrl + '/';
+    }
+
+    private static ClientBuilder
+    createBuilder() throws RuntimeException
+    {
+        return
+            ClientBuilder
+                .newBuilder()
+                .sslContext(createSslContext());
+    }
+
+    private static SSLContext
+    createSslContext() throws RuntimeException
+    {
+        try
+        {
+            Resource keystore = new ClassPathResource("customer-service.p12");
+            return
+                new SSLContextBuilder()
+                    .loadTrustMaterial(
+                        keystore.getURL(),
+                        "customer-service".toCharArray())
+                    .build();
+        }
+        catch (Exception e)
+        {
+            throw new RuntimeException(e);
+        }
+    }
+}
+```
+
+### Complete Application Setup
+
+```typescript
+import * as React from "react";
+import {IApplication} from "strata.client.core/Main";
+import {ReactApplication} from 'strata.client.react/Main';
+import {IModelStore} from 'strata.client.core/Presenter';
+import {ModelStore} from 'strata.client.core/Presenter';
+import {CustomerModel} from "./Customer/CustomerModel";
+import {MainModel} from "./Main/MainModel";
+import {MainView} from "./Main/MainView";
+import {IMainModel} from "./Main/IMainModel";
+import {IMainPresenter} from "./Main/IMainPresenter";
+import {IMainView} from "./Main/IMainView";
+import {MainPresenter} from "./Main/MainPresenter";
+
+export
+class CustomerApplication
+    extends ReactApplication<IMainModel, IMainView, IMainPresenter>
+    implements IApplication
+{
+    constructor()
+    {
+        super();
+
+        let modelStore: IModelStore =
+            new ModelStore()
+                .insert("Main", new MainModel())
+                .insert("Customer", new CustomerModel());
+        
+        let presenter: IMainPresenter = new MainPresenter(modelStore);
+
+        this.initialize(modelStore, presenter);
+    }
+
+    protected
+    getMainView(): any
+    {
+        return (<MainView presenter={this.getPresenter()}/>);
     }
 }
 ```
@@ -350,29 +553,54 @@ public class CustomerRestClient extends AbstractSpringRestClient {
 ### Testing with Client Test Utilities
 
 ```java
-import strata.client.core.test.ClientTestBase;
-import strata.client.react.test.ReactClientTest;
+import strata.client.core.presenter.ModelStore;
+import strata.client.core.presenter.IModelStore;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-@ReactClientTest
-public class CustomerPresenterTest extends ClientTestBase {
+public
+class CustomerPresenterTest
+{
+    private CustomerModel itsTestModel;
+    private CustomerView itsMockView;
+    private IModelStore itsModelStore;
+    private CustomerPresenter itsPresenter;
+
+    @BeforeEach
+    public void
+    setUp()
+    {
+        itsTestModel = createTestCustomer();
+        itsMockView = mock(CustomerView.class);
+        itsModelStore = new ModelStore();
+        itsPresenter = new CustomerPresenter(itsModelStore);
+        itsPresenter.setView(itsMockView);
+    }
 
     @Test
-    public void testCustomerPresenterLifecycle() {
-        // Arrange
-        CustomerModel model = createTestCustomer();
-        CustomerView mockView = mock(CustomerView.class);
-        IModelStore modelStore = new ModelStore();
-        CustomerPresenter presenter = new CustomerPresenter(mockView, modelStore);
-
+    public void
+    testCustomerPresenterLifecycle()
+    {
         // Act
-        presenter.start();
-        modelStore.insert(CustomerModel.class, model);
-        presenter.stop();
+        itsPresenter.start();
+        itsModelStore.insert(CustomerModel.class, itsTestModel);
+        itsPresenter.stop();
 
         // Assert
-        verify(mockView).initialize();
-        verify(mockView).updateDisplay(model);
-        verify(mockView).cleanup();
+        verify(itsMockView).initialize();
+        verify(itsMockView).updateDisplay(itsTestModel);
+        verify(itsMockView).cleanup();
+    }
+
+    private CustomerModel
+    createTestCustomer()
+    {
+        CustomerModel model = new CustomerModel();
+        model.setName("John Doe");
+        model.setEmail("john.doe@example.com");
+        return model;
     }
 }
 ```
