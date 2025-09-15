@@ -19,8 +19,10 @@ class LocalStorageObjectReader
         const item: string = localStorage.getItem(storageKey);
 
         if (item === null)
-            throw new SerializationException(
-                `No item found in localStorage for key: ${storageKey}`);
+        {
+            console.log("LocalStorageObjectReader: No item found in local storage for key " + storageKey);
+            return null;
+        }
 
         return JSON.parse(item);
     }

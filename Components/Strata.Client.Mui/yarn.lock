@@ -798,18 +798,18 @@ source-map@^0.5.7:
   integrity sha512-LbrmJOMUSdEVxIKvdcJzQC+nQhe8FUZQTXQy6+I75skNgn3OoQ0DZA8YnFa7gp8tqtL3KPf1kmo0R5DoApeSGQ==
 
 strata.client.core@0.0.0-snapshot:
-  version "0.0.0-snapshot.1756087322751"
-  resolved "https://registry.npmjs.org/strata.client.core/-/strata.client.core-0.0.0-snapshot.1756087322751.tgz#ec79c008025546d9040b8e89db7275c9d0ab3b5e"
-  integrity sha512-pLYby0UVt9Nw17ob/6CT9i3EHwWKPvIEY/z+chgfdj3ilxDgkQNe8O+lY2Z4jx98UHtHwWhVMOqHhJ91RlaunA==
+  version "0.0.0-snapshot.1756335009121"
+  resolved "https://registry.npmjs.org/strata.client.core/-/strata.client.core-0.0.0-snapshot.1756335009121.tgz#c8a0fbdf3c521c95ff680f03fb7d0421e73ca6fa"
+  integrity sha512-tDcmMS+Q/xgH9xfiK6UfPJC8osAs2Ry+QMwOUN4MYhyt+lRlRNjgqmvduAP8d6TSPObF/o5MHIBJXtp4KpBg1g==
   dependencies:
     guid-typescript "^1.0.9"
     rxjs "^7.8.1"
     strata.foundation.core "0.0.0-snapshot"
 
 strata.client.react@0.0.0-snapshot:
-  version "0.0.0-snapshot.1756087335437"
-  resolved "https://registry.npmjs.org/strata.client.react/-/strata.client.react-0.0.0-snapshot.1756087335437.tgz#95af60d2dade175458956c89f9eeb45f5141f5f8"
-  integrity sha512-IjGT9z1de74cV4BaTQyeIH0maB1T4ka9rd/w5Py3m6O5RtfSKSLCJDyQ0R7b+2R5tEutBwoScTSDvW+fYipslA==
+  version "0.0.0-snapshot.1756335023012"
+  resolved "https://registry.npmjs.org/strata.client.react/-/strata.client.react-0.0.0-snapshot.1756335023012.tgz#e3cdbff3bf74fb1dfc018f21546402f325603be4"
+  integrity sha512-jdSZq12l+U51DJthXfViv0zSeU8sGl1PEz4oqD7moZu+1m2yhdbyxyfDMW4t0NQAGU9oKTVhCsGb3DByTRzIxg==
   dependencies:
     "@types/react" "^18.3.1"
     "@types/react-router" "^5.1.20"
@@ -822,9 +822,9 @@ strata.client.react@0.0.0-snapshot:
     strata.client.core "0.0.0-snapshot"
 
 strata.foundation.core@0.0.0-snapshot:
-  version "0.0.0-snapshot.1756079814291"
-  resolved "https://registry.npmjs.org/strata.foundation.core/-/strata.foundation.core-0.0.0-snapshot.1756079814291.tgz#e57039acb25a5bbc54a7f579989c77105f0391e3"
-  integrity sha512-olSjqIEpV/jlT/wGzFpKuRmDUlyfyn8E92391Iu768wBisuSf9aovCGIAgtR7VxNyd6PpNiN7Iyeqo3kMnZF0Q==
+  version "0.0.0-snapshot.1756334959384"
+  resolved "https://registry.npmjs.org/strata.foundation.core/-/strata.foundation.core-0.0.0-snapshot.1756334959384.tgz#4bcef398323e5ba35acfe638f46d6cbc8063a90b"
+  integrity sha512-ITBBBxSIdKYP2Gzy3Fkor8i5aS6Y3mQZ3Aa+6z7HyJybX5iLEhkIvHKsObUI/E+i+/8ubg9OMrvCBydT3vDp/A==
   dependencies:
     "@js-joda/core" "^5.5.3"
     guid-typescript "^1.0.9"
