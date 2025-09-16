@@ -3,6 +3,11 @@
 
 Client-side components and utilities for building robust, scalable enterprise client applications in the Strata Framework Set. This library provides Model-View-Presenter (MVP) architecture, React integration, UI component libraries, and client-side patterns for building high-performance client applications.
 
+## Purpose
+- Provide a unified developer experience across popular frameworks, libraries, and language platforms.
+- Reduce impedance mismatch between different technologies.
+- Facilitate rapid development of enterprise-grade applications with best practices and design patterns.
+
 ## Features
 
 - **MVP Architecture**: Model-View-Presenter pattern implementation with clean separation of concerns
