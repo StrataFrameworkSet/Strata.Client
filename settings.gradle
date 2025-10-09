@@ -36,6 +36,9 @@ include 'Components:Strata.Client.Core'
 include 'Components:Strata.Client.Spring'
 include 'Components:Strata.Client.RestEasy'
 include 'Components:Strata.Client.React'
+include 'Components:Strata.Client.Mui'
+include 'Components:Strata.Client.Blueprint'
+
 
 // Tests
 include 'Tests:Strata.Client.CoreTest'
@@ -43,14 +46,5 @@ include 'Tests:Strata.Client.SpringTest'
 include 'Tests:Strata.Client.RestEasyTest'
 include 'Tests:Strata.Client.ReactTest'
 include 'Tests:Strata.Client.TestSuite'
-include 'Components:Strata.Client.React'
-findProject(':Components:Strata.Client.React')?.name = 'Strata.Client.React'
-include 'Tests:Strata.Client.ReactTest'
-findProject(':Tests:Strata.Client.ReactTest')?.name = 'Strata.Client.ReactTest'
-include 'Components:Strata.Client.Spring'
-findProject(':Components:Strata.Client.Spring')?.name = 'Strata.Client.Spring'
-include 'Components:Strata.Client.Mui'
-findProject(':Components:Strata.Client.Mui')?.name = 'Strata.Client.Mui'
-include 'Components:Strata.Client.Blueprint'
-findProject(':Components:Strata.Client.Blueprint')?.name = 'Strata.Client.Blueprint'
+
 
