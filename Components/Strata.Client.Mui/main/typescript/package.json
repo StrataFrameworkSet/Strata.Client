@@ -1,6 +1,6 @@
 {
   "name": "strata.client.mui",
-  "version": "0.0.0-snapshot.1756335045717",
+  "version": "0.0.0-snapshot.1760137162589",
   "license": "Apache-2.0",
   "scripts": {
     "increment-snapshot": "npm-prerelease-timestamp -v 0.0.0",

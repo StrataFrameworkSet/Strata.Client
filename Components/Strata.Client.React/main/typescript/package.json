@@ -1,6 +1,6 @@
 {
   "name": "strata.client.react",
-  "version": "0.0.0-snapshot.1756335023012",
+  "version": "0.0.0-snapshot.1760137140204",
   "license": "Apache-2.0",
   "scripts": {
     "increment-snapshot": "npm-prerelease-timestamp -v 0.0.0",
