@@ -15,7 +15,7 @@
         "build": "yarn run clean && yarn run build-strata-client-core && yarn run build-strata-client-react && yarn run build-strata-client-mui && yarn run build-strata-client-blueprint",
         "test": "yarn run build"
     },
-    "dependencies": {
+    "devDependencies": {
         "del-cli": "^6.0.0"
     }
 }

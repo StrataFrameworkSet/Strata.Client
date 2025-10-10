@@ -26,7 +26,8 @@
   "devDependencies": {
     "npm-prerelease-timestamp": "^1.0.1",
     "shx": "^0.3.4",
-    "typescript": "^5.2.0"
+    "typescript": "^5.2.0",
+    "del-cli": "^6.0.0"
   },
   "resolutions": {
     "react": "18.3.1",
