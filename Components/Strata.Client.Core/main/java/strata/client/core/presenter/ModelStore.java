@@ -4,8 +4,8 @@
 
 package strata.client.core.presenter;
 
-import strata.foundation.core.container.IMultiMap;
-import strata.foundation.core.container.MultiMap;
+import strata.foundation.core.collection.IMultiMap;
+import strata.foundation.core.collection.ListValuedMultiMap;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -23,7 +23,7 @@ class ModelStore
     public
     ModelStore()
     {
-        itsUpdatables = new MultiMap<>();
+        itsUpdatables = new ListValuedMultiMap<>();
         itsModels = new HashMap<>();
     }
 

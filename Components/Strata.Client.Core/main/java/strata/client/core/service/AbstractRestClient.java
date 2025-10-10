@@ -53,7 +53,6 @@ class AbstractRestClient
         itsClient =
                 builder
                     .register(new ObjectMapperProvider())
-                    //.register(new ObjectMapperContextResolver())
                     .build();
 
         itsBaseTarget = itsClient.target(initialize(baseUrl,endpointPath));
@@ -290,10 +289,18 @@ class AbstractRestClient
     private static String
     initialize(String baseUrl,String endpointPath)
     {
+        if (endpointPath.startsWith("/"))
+            endpointPath = endpointPath.substring(1);
+
+        if (endpointPath.endsWith("/"))
+            endpointPath = endpointPath.substring(0,endpointPath.length() - 1);
+
         return
             baseUrl.endsWith("/" + endpointPath)
                 ? baseUrl
-                : baseUrl + "/" + endpointPath;
+                : baseUrl.endsWith("/")
+                    ? baseUrl + endpointPath
+                    : baseUrl + "/" + endpointPath;
     }
 
     private IResponse

@@ -9,6 +9,8 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.MultivaluedHashMap;
 import jakarta.ws.rs.core.MultivaluedMap;
 import jakarta.ws.rs.core.Response;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import strata.client.core.service.*;
 import strata.foundation.core.transfer.AbstractServiceRequest;
 import strata.foundation.core.utility.BasicRetryExecutor;
@@ -27,6 +29,7 @@ class RestEasyRestClient
     private MultivaluedMap<String,Object> headers;
     private IResponseProcessor            responseProcessor;
     private final IRetryExecutor          retry;
+    private final Logger                  logger;
 
     protected
     RestEasyRestClient(
@@ -56,16 +59,18 @@ class RestEasyRestClient
         this.headers = new MultivaluedHashMap<>();
         this.responseProcessor = processor;
         this.retry = retry;
+        this.logger = LogManager.getLogger(getClass());
     }
 
-    public
-    RestEasyRestClient
+    @Deprecated
+    public RestEasyRestClient
     setHeader(String headerKey,String headerValue)
     {
         headers.add(headerKey,headerValue);
         return this;
     }
 
+    @Deprecated
     public RestEasyRestClient
     clearHeader(String headerKey)
     {
@@ -73,6 +78,7 @@ class RestEasyRestClient
         return this;
     }
 
+    @Deprecated
     public RestEasyRestClient
     clearHeaders()
     {
@@ -80,18 +86,21 @@ class RestEasyRestClient
         return this;
     }
 
+    @Deprecated
     public Set<String>
     getHeaderKeys()
     {
         return headers.keySet();
     }
 
+    @Deprecated
     public List<Object>
     getHeader(String headerKey)
     {
         return headers.get(headerKey);
     }
 
+    @Deprecated
     public boolean
     hasHeader(String headerKey)
     {
@@ -182,7 +191,10 @@ class RestEasyRestClient
         finally
         {
             if (Objects.nonNull(client))
+            {
+                logger.debug("Closing client");
                 client.close();
+            }
         }
     }
 
@@ -210,7 +222,10 @@ class RestEasyRestClient
         finally
         {
             if (Objects.nonNull(client))
+            {
+                logger.debug("Closing client");
                 client.close();
+            }
         }
     }
 
@@ -236,7 +251,10 @@ class RestEasyRestClient
         finally
         {
             if (Objects.nonNull(client))
+            {
+                logger.debug("Closing client");
                 client.close();
+            }
         }
     }
 
@@ -261,7 +279,10 @@ class RestEasyRestClient
         finally
         {
             if (Objects.nonNull(client))
+            {
+                logger.debug("Closing client");
                 client.close();
+            }
         }
     }
 
@@ -354,20 +375,29 @@ class RestEasyRestClient
                 .request(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON);
 
-        if (Objects.nonNull(headers) && !headers.isEmpty())
-            requestBuilder.headers(headers);
-
         if (request instanceof AbstractServiceRequest serviceRequest)
         {
+            MultivaluedMap<String,Object> requestHeaders = new MultivaluedHashMap<>();
+
+            if (Objects.nonNull(headers) && !headers.isEmpty())
+                requestHeaders.putAll(headers);
+
             serviceRequest
                 .getHeaders()
-                .forEach((key,value) -> requestBuilder.header(key,value));
+                .flatten()
+                .forEach(entry -> requestHeaders.add(entry.getKey(),entry.getValue()));
+
+            requestBuilder.headers(requestHeaders);
 
             serviceRequest
                 .getCookies()
                 .forEach(
                     cookie -> requestBuilder.cookie(cookie.getName(),cookie.getValue()));
         }
+
+        logger.debug(
+            "Sending request: {}",
+            getRequestPath(baseUrl,endpointPath,path));
 
         return requestBuilder;
     }
@@ -396,15 +426,19 @@ class RestEasyRestClient
                 .request(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON);
 
-        if (Objects.nonNull(headers) && !headers.isEmpty())
-            requestBuilder.headers(headers);
-
-
         if (request instanceof AbstractServiceRequest serviceRequest)
         {
+            MultivaluedMap<String,Object> requestHeaders = new MultivaluedHashMap<>();
+
+            if (Objects.nonNull(headers) && !headers.isEmpty())
+                requestHeaders.putAll(headers);
+
             serviceRequest
                 .getHeaders()
-                .forEach((key,value) -> requestBuilder.header(key,value));
+                .flatten()
+                .forEach(entry -> requestHeaders.add(entry.getKey(),entry.getValue()));
+
+            requestBuilder.headers(requestHeaders);
 
             serviceRequest
                 .getCookies()
@@ -412,18 +446,36 @@ class RestEasyRestClient
                     cookie -> requestBuilder.cookie(cookie.getName(),cookie.getValue()));
         }
 
+        logger.debug(
+            "Sending request: {}",
+            getRequestPath(baseUrl,endpointPath,path));
+
         return requestBuilder;
     }
 
     private static String
     initialize(String baseUrl,String endpointPath)
     {
+        if (endpointPath.startsWith("/"))
+            endpointPath = endpointPath.substring(1);
+
+        if (endpointPath.endsWith("/"))
+            endpointPath = endpointPath.substring(0,endpointPath.length() - 1);
+
         return
             baseUrl.endsWith("/" + endpointPath)
                 ? baseUrl
                 : baseUrl.endsWith("/")
                     ? baseUrl + endpointPath
                     : baseUrl + "/" + endpointPath;
+    }
+
+    private static String
+    getRequestPath(String baseUrl,String endpointPath,String methodPath)
+    {
+        return
+            initialize(baseUrl,endpointPath) +
+            (methodPath.startsWith("/") ? methodPath : "/" + methodPath);
     }
 
     private <Reply> Reply
@@ -443,18 +495,26 @@ class RestEasyRestClient
         finally
         {
             if (Objects.nonNull(client))
+            {
+                logger.debug("Closing client");
                 client.close();
+            }
         }
     }
 
     private IResponse
     toResponse(String methodPath,Response response)
     {
-        return
+        IResponse output =
             new StandardResponse(
                 initialize(baseUrl,endpointPath),
                 methodPath,
                 response);
+
+        logger.debug(
+            "Received response for: {}",
+            output.getRequestPath());
+        return output;
     }
 }
 
