@@ -12,7 +12,8 @@
         "build-strata-client-react": "cd Components/Strata.Client.React && yarn run publish-package",
         "build-strata-client-mui": "cd Components/Strata.Client.Mui && yarn run publish-package",
         "build-strata-client-blueprint": "cd Components/Strata.Client.Blueprint && yarn run publish-package",
-        "build": "yarn run clean && yarn run build-strata-client-core && yarn run build-strata-client-react && yarn run build-strata-client-mui && yarn run build-strata-client-blueprint",
+        "dev-init": "yarn --dev install",
+        "build": "yarn run dev-init && yarn run clean && yarn run build-strata-client-core && yarn run build-strata-client-react && yarn run build-strata-client-mui && yarn run build-strata-client-blueprint",
         "test": "yarn run build"
     },
     "devDependencies": {
