@@ -11,11 +11,11 @@ import jakarta.ws.rs.core.MultivaluedMap;
 import jakarta.ws.rs.core.Response;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jboss.resteasy.client.jaxrs.cache.BrowserCacheFeature;
 import strata.client.core.service.*;
 import strata.foundation.core.transfer.AbstractServiceRequest;
 import strata.foundation.core.utility.BasicRetryExecutor;
 import strata.foundation.core.utility.IRetryExecutor;
-
 
 import java.util.*;
 import java.util.concurrent.CompletionStage;
@@ -177,6 +177,7 @@ class RestEasyRestClient
         Client client =
             builder
                 .register(new ObjectMapperProvider())
+                .register(new BrowserCacheFeature())
                 .build();
 
         try
@@ -264,6 +265,7 @@ class RestEasyRestClient
         Client client =
             builder
                 .register(new ObjectMapperProvider())
+                .register(new BrowserCacheFeature())
                 .build();
         try
         {

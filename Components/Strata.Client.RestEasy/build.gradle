@@ -44,5 +44,5 @@ dependencies {
     api "strata.foundation:strata-foundation-core:$version"
     api 'jakarta.ws.rs:jakarta.ws.rs-api:3.1.0'
     api 'com.fasterxml.jackson.jakarta.rs:jackson-jakarta-rs-json-provider:2.15.2'
-    api 'org.jboss.resteasy:resteasy-client-api:7.0.0.Final'
-}
+    //api 'org.jboss.resteasy:resteasy-client-api:7.0.0.Final'
+    api 'org.jboss.resteasy:resteasy-client:7.0.0.Final'}
