@@ -45,7 +45,6 @@ class AbstractSpringRestClient
         template =
             new RestTemplateBuilder()
                 .messageConverters(converter)
-                .setBufferRequestBody(true)
                 .requestFactory(() -> getRequestFactory(keyStoreFilename,password))
                 .build();
     }
@@ -75,7 +74,8 @@ class AbstractSpringRestClient
                             .build())
                     .build();
 
-            return new HttpComponentsClientHttpRequestFactory(httpClient);
+            return
+                new HttpComponentsClientHttpRequestFactory(httpClient);
         }
         catch (Throwable cause)
         {
