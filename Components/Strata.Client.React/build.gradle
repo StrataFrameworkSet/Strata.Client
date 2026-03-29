@@ -3,8 +3,8 @@ plugins {
 }
 
 sourceSets {
-    main.java.srcDirs = ['main/java']
-    test.java.srcDirs = ['unused']
+    main.java.srcDirs = ['src/main/java']
+    test.java.srcDirs = ['src/unused']
 }
 
 group 'strata.client'
@@ -15,7 +15,5 @@ task sourceJar(type: Jar) {
 }
 
 dependencies {
-    api "strata.foundation:strata-foundation-core:$version"
-    implementation 'jakarta.ws.rs:jakarta.ws.rs-api:3.1.0'
-    implementation 'com.fasterxml.jackson.jakarta.rs:jackson-jakarta-rs-json-provider:2.15.2'
+    api project(':Components:Strata.Client.Core')
 }

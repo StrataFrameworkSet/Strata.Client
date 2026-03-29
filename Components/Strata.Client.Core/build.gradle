@@ -4,16 +4,15 @@ plugins {
 }
 
 sourceSets {
-    main.java.srcDirs = ['main/java']
-    main.resources.srcDirs = ['main/resources']
-    test.java.srcDirs = ['unused']
+    main.java.srcDirs = ['src/main/java']
+    main.resources.srcDirs = ['src/main/resources']
+    test.java.srcDirs = ['src/unused']
 }
 
 apply plugin: 'maven-publish'
 apply plugin: "com.github.node-gradle.node"
 
 group 'strata.client'
-version "$major$minor$patch"
 
 task sourceJar(type: Jar) {
     from sourceSets.main.allJava
@@ -40,7 +39,7 @@ publishing {
 }
 
 dependencies {
-    api "strata.foundation:strata-foundation-core:$version"
+    api "strata.foundation:strata-foundation-core:$strata_foundation_version"
     api "jakarta.ws.rs:jakarta.ws.rs-api:$jakarta_ws_rs_version"
     api "com.fasterxml.jackson.jakarta.rs:jackson-jakarta-rs-json-provider:$jackson_version"
 }

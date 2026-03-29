@@ -5,12 +5,12 @@
         "sourceMap": true,
         "declaration": true,
         "allowSyntheticDefaultImports": true,
-        "outDir": "build/dist",
+        "outDir": ".build/dist",
         "jsx": "react"
     },
     "include": [
-        "main/typescript/**/*",
-        "main/typescript/typings/**/*"
+        "src/main/typescript/**/*",
+        "src/main/typescript/typings/**/*"
     ],
     "exclude": [
         "node_modules",

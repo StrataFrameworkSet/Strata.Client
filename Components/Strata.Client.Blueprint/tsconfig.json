@@ -4,12 +4,12 @@
         "target": "ES2022",
         "sourceMap": true,
         "declaration": true,
-        "outDir": "build/dist",
+        "outDir": ".build/dist",
         "jsx": "react"
     },
     "include": [
-        "main/typescript/**/*",
-        "main/typescript/typings/**/*"
+        "src/main/typescript/**/*",
+        "src/main/typescript/typings/**/*"
     ],
     "exclude": [
         "node_modules",

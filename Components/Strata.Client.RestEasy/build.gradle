@@ -13,7 +13,6 @@ apply plugin: 'maven-publish'
 apply plugin: "com.github.node-gradle.node"
 
 group 'strata.client'
-version "$major$minor$patch"
 
 task sourceJar(type: Jar) {
     from sourceSets.main.allJava
@@ -41,8 +40,7 @@ publishing {
 
 dependencies {
     api project(':Components:Strata.Client.Core')
-    api "strata.foundation:strata-foundation-core:$version"
-    api 'jakarta.ws.rs:jakarta.ws.rs-api:3.1.0'
-    api 'com.fasterxml.jackson.jakarta.rs:jackson-jakarta-rs-json-provider:2.15.2'
-    //api 'org.jboss.resteasy:resteasy-client-api:7.0.0.Final'
-    api 'org.jboss.resteasy:resteasy-client:7.0.0.Final'}
+    //api "jakarta.ws.rs:jakarta.ws.rs-api:$jakarta_ws_rs_version"
+    //api "com.fasterxml.jackson.jakarta.rs:jackson-jakarta-rs-json-provider:$jackson_version"
+    api "org.jboss.resteasy:resteasy-client:$jboss_resteasy_version"
+}

@@ -1,8 +1,10 @@
-project.buildDir = ".build";
 wrapper.jarFile = ".gradle/wrapper/gradle-wrapper.jar"
 
+layout.buildDirectory.set(layout.projectDirectory.dir('.build'))
 subprojects {
     apply plugin: 'java'
+
+    layout.buildDirectory.set(layout.projectDirectory.dir('.build'))
 
     java {
         toolchain {
@@ -21,6 +23,8 @@ subprojects {
 }
 
 ext {
+    strata_foundation_version = "1.0-SNAPSHOT"
+
     spring_version = "6.2.2"
     springboot_version = "3.4.1"
     //spring_guice_version = "3.0.0"
@@ -42,15 +46,20 @@ ext {
 
     //jakarta_inject_version = "2.0.1"
     jakarta_ws_rs_version = "4.0.0"
-    //jakarta_websocket_version = "2.3.0-M2"
+    jakarta_websocket_version = "2.3.0-M2"
+
+    jboss_resteasy_version = "7.0.0.Final"
+    eclipse_websocket_version = "11.0.26"
 
     junit_jupiter_version = "5.13.3"
     junit_platform_version = "1.13.3"
 
     major = "1"
-    minor = ".0"
-    patch = "-SNAPSHOT"
+    minor = "0"
+    patch = "SNAPSHOT"
+    separator1 = "."
+    separator2 = "-"
 }
 
 group 'strata.client'
-version "$major$minor$patch"
+version "$major$separator1$minor$separator2$patch"

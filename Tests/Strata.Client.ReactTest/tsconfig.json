@@ -4,14 +4,14 @@
         "target": "ES2022",
         "sourceMap": true,
         "declaration": true,
-        "outDir": "build/dist",
+        "outDir": ".build/dist",
         "jsx": "react",
         "allowSyntheticDefaultImports": true
     },
     "include": [
-        "test/typescript/**/*",
-        "test/typescript/typings/**/*",
-        "test/typescript/**/*.css"
+        "src/test/typescript/**/*",
+        "src/test/typescript/typings/**/*",
+        "src/test/typescript/**/*.css"
     ],
     "exclude": [
         "node_modules",

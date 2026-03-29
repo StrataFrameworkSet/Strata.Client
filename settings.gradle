@@ -48,3 +48,5 @@ include 'Tests:Strata.Client.ReactTest'
 include 'Tests:Strata.Client.TestSuite'
 
 
+
+include 'Components:Strata.Client.WebSocket'

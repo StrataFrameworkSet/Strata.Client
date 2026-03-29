@@ -1,1 +1,0 @@
-export {LoginOrRegisterMenu} from './LoginOrRegisterMenu';
