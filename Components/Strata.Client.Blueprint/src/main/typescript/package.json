@@ -1,6 +1,6 @@
 {
   "name": "strata.client.blueprint",
-  "version": "0.0.0-snapshot.1774834398526",
+  "version": "0.0.0-snapshot.1774838252042",
   "license": "Apache-2.0",
   "scripts": {
     "increment-snapshot": "npm-prerelease-timestamp -v 0.0.0",

@@ -843,18 +843,18 @@ snake-case@^3.0.4:
     tslib "^2.0.3"
 
 strata.client.core@0.0.0-snapshot:
-  version "0.0.0-snapshot.1774834278081"
-  resolved "https://registry.npmjs.org/strata.client.core/-/strata.client.core-0.0.0-snapshot.1774834278081.tgz#f0bbb3cb1655f3780fd734d3e59bbd9b2c5839a0"
-  integrity sha512-NfR14hwytTvQ+NL1ZB7tg6w9uH94RV3f/Hie0M+ZiCmV92guJ18oNnoGO6cf8iXRvYuafJEsUa1AM0yL2fXDpQ==
+  version "0.0.0-snapshot.1774838186983"
+  resolved "https://registry.npmjs.org/strata.client.core/-/strata.client.core-0.0.0-snapshot.1774838186983.tgz#a7dac13f34fad287e3eae8275bcd84c99bb291f9"
+  integrity sha512-tM5GIvnpyw7+Hgh9uziZznBxlDRYhrr+rH2r/6NTIY72zskLY5981elLK5zrhmCQ1Ta7N77ODBP7iDBKAhBDUA==
   dependencies:
     guid-typescript "^1.0.9"
     rxjs "^7.8.1"
     strata.foundation.core "0.0.0-snapshot"
 
 strata.client.react@0.0.0-snapshot:
-  version "0.0.0-snapshot.1774834316907"
-  resolved "https://registry.npmjs.org/strata.client.react/-/strata.client.react-0.0.0-snapshot.1774834316907.tgz#96b3342659c2be60e75e8837a803619edf8c0f97"
-  integrity sha512-vL+HfftR1HEx7Dxv5QyAcRfsncup3VCVyiRNyTDZlL64nNvLc4tAJXeO2i0xtpi9jQR5A5HdoGFQrpx7SQkSlg==
+  version "0.0.0-snapshot.1774838207719"
+  resolved "https://registry.npmjs.org/strata.client.react/-/strata.client.react-0.0.0-snapshot.1774838207719.tgz#62889dfc5b62063a6261bd62ffc3731cf2165905"
+  integrity sha512-FEX7hX8RKsrcJMnsJ57QIKniI4cO429UfEXLFKZOVkjNGKedda9VBfbfyeug6hRCz7k3ekxKu+fQU8C9QAee8w==
   dependencies:
     "@types/react" "^18.3.1"
     "@types/react-router" "^5.1.20"
