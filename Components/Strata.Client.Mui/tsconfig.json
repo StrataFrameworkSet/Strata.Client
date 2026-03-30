@@ -5,7 +5,7 @@
         "sourceMap": true,
         "declaration": true,
         "allowSyntheticDefaultImports": true,
-        "outDir": "build/dist",
+        "outDir": ".build/dist",
         "jsx": "react"
     },
     "include": [

@@ -87,7 +87,7 @@ jobs:
         with:
           name: build-artifacts
           path: |
-            **/build/libs/*.jar
+            **/.build/libs/*.jar
           retention-days: 1
           include-hidden-files: 'true'
 
@@ -95,7 +95,7 @@ jobs:
         uses: mikepenz/action-junit-report@v3
         if: success() || failure()
         with:
-            report_paths: '**/build/test-results/test/TEST-*.xml'
+            report_paths: '**/.build/test-results/test/TEST-*.xml'
 
 #  java-integration-stage:
 #    runs-on: ubuntu-latest
