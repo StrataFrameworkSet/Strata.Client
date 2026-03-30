@@ -40,13 +40,22 @@ jobs:
         uses: mikepenz/action-junit-report@v3
         if: success() || failure() # always run even if the previous step fails
         with:
-          report_paths: '**/build/test-results/test/TEST-*.xml'
+          report_paths: '**/.build/test-results/test/TEST-*.xml'
 
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
           node-version: '20.5.1'
           registry-url: 'https://registry.npmjs.org/'
+
+      - name: Configure npm/yarn retries
+        run: |
+          npm config set fetch-retries 5
+          npm config set fetch-retry-mintimeout 20000
+          npm config set fetch-retry-maxtimeout 120000
+          yarn config set network-timeout 600000 -g
+        env:
+          NODE_OPTIONS: --dns-result-order=ipv4first
 
       - name: Build Typescript with Yarn
         run: yarn run test
@@ -57,8 +66,8 @@ jobs:
         run: |
           git config user.name "GitHub Actions Bot"
           git config user.email "<>"
-          git add Components/Strata.Client.Core/main/typescript/package.json
-          git add Components/Strata.Client.React/main/typescript/package.json
+          git add Components/Strata.Client.Core/src/main/typescript/package.json
+          git add Components/Strata.Client.React/src/main/typescript/package.json
           git commit -m "strata.client.* package.json new version"
           git push origin development
 
