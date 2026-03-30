@@ -6,11 +6,8 @@ package strata.client.core.presenter;
 
 public
 interface IPresenter<M,V>
-    extends IUpdatable<M>
+    extends IUpdatable<M>, IPresentable<V>
 {
-    V
-    getView();
-
     void
     start();
 

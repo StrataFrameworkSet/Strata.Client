@@ -35,6 +35,8 @@ rootProject.name = 'Strata.Client'
 include 'Components:Strata.Client.Core'
 include 'Components:Strata.Client.Spring'
 include 'Components:Strata.Client.RestEasy'
+include 'Components:Strata.Client.Vaadin'
+include 'Components:Strata.Client.WebSocket'
 include 'Components:Strata.Client.React'
 include 'Components:Strata.Client.Mui'
 include 'Components:Strata.Client.Blueprint'
@@ -48,5 +50,3 @@ include 'Tests:Strata.Client.ReactTest'
 include 'Tests:Strata.Client.TestSuite'
 
 
-
-include 'Components:Strata.Client.WebSocket'

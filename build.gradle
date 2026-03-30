@@ -48,6 +48,7 @@ ext {
     jakarta_ws_rs_version = "4.0.0"
     jakarta_websocket_version = "2.3.0-M2"
 
+    vaadin_version = "25.1.1"
     jboss_resteasy_version = "7.0.0.Final"
     eclipse_websocket_version = "11.0.26"
 

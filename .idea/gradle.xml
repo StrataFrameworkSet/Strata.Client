@@ -16,6 +16,7 @@
             <option value="$PROJECT_DIR$/Components/Strata.Client.React" />
             <option value="$PROJECT_DIR$/Components/Strata.Client.RestEasy" />
             <option value="$PROJECT_DIR$/Components/Strata.Client.Spring" />
+            <option value="$PROJECT_DIR$/Components/Strata.Client.Vaadin" />
             <option value="$PROJECT_DIR$/Components/Strata.Client.WebSocket" />
             <option value="$PROJECT_DIR$/Tests" />
             <option value="$PROJECT_DIR$/Tests/Strata.Client.CoreTest" />

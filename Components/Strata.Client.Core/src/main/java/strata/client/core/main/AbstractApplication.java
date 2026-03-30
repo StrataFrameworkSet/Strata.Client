@@ -12,7 +12,7 @@ class AbstractApplication<M,V,P>
     implements IApplication
 {
     private final IModelStore itsModelStore;
-    private IPresenter<M,V> itsPresenter;
+    private IPresenter<M,V>   itsPresenter;
     private V                 itsView;
 
     protected
