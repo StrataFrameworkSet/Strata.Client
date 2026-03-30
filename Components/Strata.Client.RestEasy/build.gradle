@@ -40,6 +40,7 @@ publishing {
 
 dependencies {
     api project(':Components:Strata.Client.Core')
+    api "strata.foundation:strata-foundation-core:$strata_foundation_version"
     //api "jakarta.ws.rs:jakarta.ws.rs-api:$jakarta_ws_rs_version"
     //api "com.fasterxml.jackson.jakarta.rs:jackson-jakarta-rs-json-provider:$jackson_version"
     api "org.jboss.resteasy:resteasy-client:$jboss_resteasy_version"
