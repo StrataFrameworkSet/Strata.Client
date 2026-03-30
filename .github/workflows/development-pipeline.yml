@@ -11,6 +11,7 @@ on:
 env:
   PROPERTIES_ENCRYPTION_KEY: ${{secrets.PROPERTIES_ENCRYPTION_KEY}}
   REPOSITORY_PASSWORD: ${{secrets.REPOSITORY_PASSWORD}}
+  NODE_AUTH_TOKEN: ${{secrets.NODE_AUTH_TOKEN}}
   #REPOSITORY_USER: must be set in GitHub variables
 
 jobs:

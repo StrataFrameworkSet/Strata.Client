@@ -566,9 +566,9 @@ slash@^5.1.0:
   integrity sha512-ZA6oR3T/pEyuqwMgAKT0/hAv8oAXckzbkmR0UkUosQ+Mc4RxGoJkRmwHgHufaenlyAgE1Mxgpdcrf75y6XcnDg==
 
 strata.client.core@0.0.0-snapshot:
-  version "0.0.0-snapshot.1773607893362"
-  resolved "https://registry.npmjs.org/strata.client.core/-/strata.client.core-0.0.0-snapshot.1773607893362.tgz#dbdf7a1f1674f623d7f5cdaab5dd61fb0c2cc84c"
-  integrity sha512-TPYjBWNNwFNnj0WTMAv1glhd7c2HnCJVDz053zdMmkKE8lf1GKvvlGgNMUMw9eUKJwHR2lnnBmVO2uoqaRsjuQ==
+  version "0.0.0-snapshot.1774829152076"
+  resolved "https://registry.npmjs.org/strata.client.core/-/strata.client.core-0.0.0-snapshot.1774829152076.tgz#f6820c1cd3b8464e4dfb4759a0f4d5842c3cb586"
+  integrity sha512-rW1wsoxcidFkdv4gU+CV7v2KmVJ6LD5o+RObHAXlO4N5wEGlzPVENJUnBXLADDUx+aTKDhUHuZTMcWSeUgZW7g==
   dependencies:
     guid-typescript "^1.0.9"
     rxjs "^7.8.1"

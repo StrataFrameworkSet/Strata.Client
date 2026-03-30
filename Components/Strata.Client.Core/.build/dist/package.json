@@ -1,6 +1,6 @@
 {
   "name": "strata.client.core",
-  "version": "0.0.0-snapshot.1774826840133",
+  "version": "0.0.0-snapshot.1774834446712",
   "license": "Apache-2.0",
   "scripts": {
     "increment-snapshot": "npm-prerelease-timestamp -v 0.0.0",
