@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="FrameworkDetectionExcludesConfiguration">
+    <file type="web" url="file://$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_22" default="true" project-jdk-name="corretto-22" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/out" />
+  </component>
+  <component name="SbtLocalSettings">
+    <option name="projectSyncType">
+      <map>
+        <entry key="$PROJECT_DIR$/../../halo-catalog/catalog-api-external" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../../halo-catalog/catalog-api-internal" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../../halo-catalog/catalog-common-libs" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../../halo-catalog/workers" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../../halo-ngen" value="PREVIEW" />
+      </map>
+    </option>
+  </component>
+  <component name="ScalaSbtSettings">
+    <option name="customVMPath" />
+  </component>
+</project>

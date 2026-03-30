@@ -1,0 +1,29 @@
+{
+  "name": "strata.client.react",
+  "version": "0.0.0-snapshot.1774826597939",
+  "license": "Apache-2.0",
+  "scripts": {
+    "increment-snapshot": "npm-prerelease-timestamp -v 0.0.0",
+    "increment-major": "npm version major",
+    "increment-minor": "npm version minor",
+    "increment-patch": "npm version patch"
+  },
+  "dependencies": {
+    "@types/react": "^18.3.1",
+    "@types/react-router": "^5.1.20",
+    "@types/react-router-dom": "^5.3.3",
+    "react": "^18.3.1",
+    "react-router": "^5.3.4",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^5.3.4",
+    "rxjs": "^7.8.1",
+    "strata.client.core": "0.0.0-snapshot"
+  },
+  "resolutions": {
+    "csstype": "3.1.2",
+    "react-router": "5.3.4",
+    "react-router-dom": "5.3.4",
+    "@types/react": "18.3.1",
+    "@types/react-router": "5.1.20"
+  }
+}

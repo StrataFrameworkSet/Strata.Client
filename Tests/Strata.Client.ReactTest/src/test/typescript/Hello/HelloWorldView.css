@@ -1,0 +1,20 @@
+form.input-form {
+    width: 500px;
+    display: grid;
+    grid-auto-flow: row;
+    grid-row-gap: 10px;
+}
+
+div.test-input {
+    margin: 5px;
+}
+
+label.greeting-label {
+    font-size: large;
+    margin-top: 20px !important;
+    margin-bottom: 20px !important;
+}
+
+button.submit-button {
+    width: 50%;
+}

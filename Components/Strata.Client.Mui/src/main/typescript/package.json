@@ -1,0 +1,22 @@
+{
+  "name": "strata.client.mui",
+  "version": "0.0.0-snapshot.1773607688336",
+  "license": "Apache-2.0",
+  "scripts": {
+    "increment-snapshot": "npm-prerelease-timestamp -v 0.0.0",
+    "increment-major": "npm version major",
+    "increment-minor": "npm version minor",
+    "increment-patch": "npm version patch"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.13.5",
+    "@emotion/styled": "^11.13.5",
+    "@mui/icons-material": "^6.1.8",
+    "@mui/material": "^6.1.8",
+    "strata.client.react": "0.0.0-snapshot"
+  },
+  "resolutions": {
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  }
+}

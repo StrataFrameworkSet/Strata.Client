@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="GradleMigrationSettings" migrationVersion="1" />
+  <component name="GradleSettings">
+    <option name="linkedExternalProjectsSettings">
+      <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="gradleJvm" value="Corretto-17" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/Components" />
+            <option value="$PROJECT_DIR$/Components/Strata.Client.Blueprint" />
+            <option value="$PROJECT_DIR$/Components/Strata.Client.Core" />
+            <option value="$PROJECT_DIR$/Components/Strata.Client.Mui" />
+            <option value="$PROJECT_DIR$/Components/Strata.Client.React" />
+            <option value="$PROJECT_DIR$/Components/Strata.Client.RestEasy" />
+            <option value="$PROJECT_DIR$/Components/Strata.Client.Spring" />
+            <option value="$PROJECT_DIR$/Components/Strata.Client.WebSocket" />
+            <option value="$PROJECT_DIR$/Tests" />
+            <option value="$PROJECT_DIR$/Tests/Strata.Client.CoreTest" />
+            <option value="$PROJECT_DIR$/Tests/Strata.Client.ReactTest" />
+            <option value="$PROJECT_DIR$/Tests/Strata.Client.RestEasyTest" />
+            <option value="$PROJECT_DIR$/Tests/Strata.Client.SpringTest" />
+            <option value="$PROJECT_DIR$/Tests/Strata.Client.TestSuite" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+    </option>
+  </component>
+</project>
