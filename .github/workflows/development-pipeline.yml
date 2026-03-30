@@ -80,7 +80,7 @@ jobs:
         run: chmod a+x gradlew
 
       - name: Build Java with Gradle
-        run: ./gradlew buildAll
+        run: ./gradlew build
 
       - name: Publish Test Report (Commit Stage)
         uses: mikepenz/action-junit-report@v3
