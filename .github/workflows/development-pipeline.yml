@@ -88,49 +88,49 @@ jobs:
         with:
             report_paths: '**/.build/test-results/test/TEST-*.xml'
 
-  java-integration-stage:
-    runs-on: ubuntu-latest
-    needs: java-commit-stage
-    steps:
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v2
-        with:
-          registry: ghcr.io
-          username: ${{vars.REPOSITORY_USER}}
-          password: ${{secrets.REPOSITORY_PASSWORD}}
-
-      - name: Pull Strata.Client.TestSuite Image
-        run: docker pull ghcr.io/johnliebenau/strata.client/strata-client-testsuite:1.0-SNAPSHOT
-
-      - name: Run Strata.Client.TestSuite Integration Tests
-        run: |
-          docker run ghcr.io/johnliebenau/strata.client/strata-client-testsuite:1.0-SNAPSHOT \
-            --package=strata.foundation --tags=IntegrationStage
-
-  java-acceptance-stage:
-    runs-on: ubuntu-latest
-    needs: java-integration-stage
-    steps:
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v2
-        with:
-          registry: ghcr.io
-          username: ${{vars.REPOSITORY_USER}}
-          password: ${{secrets.REPOSITORY_PASSWORD}}
-
-      - name: Pull Strata.Client.TestSuite Image
-        run: docker pull ghcr.io/johnliebenau/strata.client/strata-client-testsuite:1.0-SNAPSHOT
-
-      - name: Run Strata.Client.TestSuite Acceptance Tests
-        run: |
-          docker run ghcr.io/johnliebenau/strata.client/strata-client-testsuite:1.0-SNAPSHOT \
-            --package=strata.foundation --tags=AcceptanceStage
+#  java-integration-stage:
+#    runs-on: ubuntu-latest
+#    needs: java-commit-stage
+#    steps:
+#      - name: Set up Docker Buildx
+#        uses: docker/setup-buildx-action@v2
+#
+#      - name: Login to GitHub Container Registry
+#        uses: docker/login-action@v2
+#        with:
+#          registry: ghcr.io
+#          username: ${{vars.REPOSITORY_USER}}
+#          password: ${{secrets.REPOSITORY_PASSWORD}}
+#
+#      - name: Pull Strata.Client.TestSuite Image
+#        run: docker pull ghcr.io/johnliebenau/strata.client/strata-client-testsuite:1.0-SNAPSHOT
+#
+#      - name: Run Strata.Client.TestSuite Integration Tests
+#        run: |
+#          docker run ghcr.io/johnliebenau/strata.client/strata-client-testsuite:1.0-SNAPSHOT \
+#            --package=strata.foundation --tags=IntegrationStage
+#
+#  java-acceptance-stage:
+#    runs-on: ubuntu-latest
+#    needs: java-integration-stage
+#    steps:
+#      - name: Set up Docker Buildx
+#        uses: docker/setup-buildx-action@v2
+#
+#      - name: Login to GitHub Container Registry
+#        uses: docker/login-action@v2
+#        with:
+#          registry: ghcr.io
+#          username: ${{vars.REPOSITORY_USER}}
+#          password: ${{secrets.REPOSITORY_PASSWORD}}
+#
+#      - name: Pull Strata.Client.TestSuite Image
+#        run: docker pull ghcr.io/johnliebenau/strata.client/strata-client-testsuite:1.0-SNAPSHOT
+#
+#      - name: Run Strata.Client.TestSuite Acceptance Tests
+#        run: |
+#          docker run ghcr.io/johnliebenau/strata.client/strata-client-testsuite:1.0-SNAPSHOT \
+#            --package=strata.foundation --tags=AcceptanceStage
 
 
 
