@@ -73,14 +73,14 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
       - name: Chmod GradleW
         run: chmod a+x gradlew
 
       - name: Build Java with Gradle
-        uses: gradle/gradle-build-action@v4
-        with:
-          gradle-executable: gradlew
-          arguments: build
+        run: ./gradlew build
 
       - name: Save Build Artifacts
         uses: actions/upload-artifact@v4
@@ -154,6 +154,12 @@ jobs:
           java-version: '22'
           distribution: 'corretto'
 
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Chmod GradleW
+        run: chmod a+x gradlew
+
       - name: Chmod GradleW
         run: chmod a+x gradlew
 
@@ -164,9 +170,6 @@ jobs:
           path: .
 
       - name: Publish Build Artifacts
-        uses: gradle/gradle-build-action@v4
-        with:
-          gradle-executable: gradlew
-          arguments: publishAllPublicationsToGitHubPackagesRepository -x test -x build -x jar -x compileJava -x processResources -x classes -x testJar -x testFixturesJar -x testClasses -x testFixturesClasses
+        run: ./gradlew publishAllPublicationsToGitHubPackagesRepository -x test -x build -x jar -x compileJava -x processResources -x classes -x testJar -x testFixturesJar -x testClasses -x testFixturesClasses
 
 
