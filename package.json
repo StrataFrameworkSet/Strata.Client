@@ -15,7 +15,7 @@
         "dev-init": "yarn --dev install",
         "build": "yarn run dev-init && yarn run clean && yarn run build-strata-client-core && yarn run build-strata-client-react && yarn run build-strata-client-mui && yarn run build-strata-client-blueprint",
         "test": "yarn run build",
-        "sleep5": "node -e \"setTimeout(() => {},5000);\""
+        "sleep5": "node -e \"setTimeout(() => process.exit(0), 5000)\""
     },
     "devDependencies": {
         "del-cli": "^6.0.0"
