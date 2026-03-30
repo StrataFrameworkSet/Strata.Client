@@ -13,7 +13,7 @@
     "build": "yarn run build-init && tsc && cd src/main/typescript && yarn run increment-snapshot && cd ../../.. && yarn run copy-package && cd .build/dist && yarn pack",
     "publish-package": "yarn run build && cd .build/dist && yarn publish --non-interactive --tag 0.0.0-snapshot",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "sleep5": "node -e \"setTimeout(() => {},5000);\""
+    "sleep5": "node -e \"setTimeout(() => process.exit(0),5000);\""
   },
   "keywords": [],
   "author": "",

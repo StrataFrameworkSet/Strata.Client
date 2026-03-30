@@ -8,14 +8,13 @@
         "clean-strata-client-blueprint": "cd Components/Strata.Client.Blueprint && yarn run clean",
         "clean-components": "yarn run clean-strata-client-core && yarn run clean-strata-client-react && yarn run clean-strata-client-mui && yarn run clean-strata-client-blueprint",
         "clean": "yarn run clean-components",
-        "build-strata-client-core": "cd Components/Strata.Client.Core && yarn run publish-package && yarn run sleep4",
+        "build-strata-client-core": "cd Components/Strata.Client.Core && yarn run publish-package && yarn run sleep5",
         "build-strata-client-react": "cd Components/Strata.Client.React && yarn run publish-package",
         "build-strata-client-mui": "cd Components/Strata.Client.Mui && yarn run publish-package",
         "build-strata-client-blueprint": "cd Components/Strata.Client.Blueprint && yarn run publish-package",
         "dev-init": "yarn --dev install",
         "build": "yarn run dev-init && yarn run clean && yarn run build-strata-client-core && yarn run build-strata-client-react && yarn run build-strata-client-mui && yarn run build-strata-client-blueprint",
-        "test": "yarn run build",
-        "sleep4": "node -e \"setTimeout(() => process.exit(0), 4000)\""
+        "test": "yarn run build"
     },
     "devDependencies": {
         "del-cli": "^6.0.0"
