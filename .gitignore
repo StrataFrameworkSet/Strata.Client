@@ -65,6 +65,8 @@ Desktop.ini
 # Directories
 ######################
 /.build/**
+**/.build/**
+/build/**
 **/build/**
 
 

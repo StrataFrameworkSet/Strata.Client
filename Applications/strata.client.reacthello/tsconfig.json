@@ -18,7 +18,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "outDir": ".build/dist",
+    "outDir": "build/dist",
     "jsx": "react-jsx"
   },
   "include": [

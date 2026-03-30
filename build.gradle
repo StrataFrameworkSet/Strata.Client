@@ -1,10 +1,10 @@
 wrapper.jarFile = ".gradle/wrapper/gradle-wrapper.jar"
 
-layout.buildDirectory.set(layout.projectDirectory.dir('.build'))
+layout.buildDirectory.set(layout.projectDirectory.dir('build'))
 subprojects {
     apply plugin: 'java'
 
-    layout.buildDirectory.set(layout.projectDirectory.dir('.build'))
+    layout.buildDirectory.set(layout.projectDirectory.dir('build'))
 
     java {
         toolchain {
