@@ -73,9 +73,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
-#      - name: Set up Gradle
-#        uses: gradle/actions/setup-gradle@v3
-
       - name: Chmod GradleW
         run: chmod a+x gradlew
 
@@ -84,6 +81,9 @@ jobs:
         with:
           gradle-executable: gradlew
           arguments: build
+
+      - name: Print Directory Structure
+        uses: FiorelaCiroku/XDTesting-Print-Directory-Structure@v1.0.2
 
       - name: Save Build Artifacts
         uses: actions/upload-artifact@v4
