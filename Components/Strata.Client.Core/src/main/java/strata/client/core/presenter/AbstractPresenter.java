@@ -21,6 +21,14 @@ class AbstractPresenter<M,V>
     }
 
     @Override
+    public IPresenter<M,V>
+    setView(V view)
+    {
+        itsView = view;
+        return this;
+    }
+
+    @Override
     public V
     getView()
     {
@@ -37,11 +45,6 @@ class AbstractPresenter<M,V>
     protected abstract void
     doUpdate(V view,M model);
 
-    protected void
-    setView(V view)
-    {
-        itsView = view;
-    }
 }
 
 //////////////////////////////////////////////////////////////////////////////
