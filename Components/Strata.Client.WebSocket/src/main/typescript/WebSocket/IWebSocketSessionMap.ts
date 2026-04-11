@@ -1,0 +1,8 @@
+export interface IWebSocketSessionMap
+{
+    addSession(path: string, session: WebSocket): void;
+    removeSession(path: string, session: WebSocket): void;
+    getSessions(path: string): Set<WebSocket>;
+    getAllSessions(): Set<WebSocket>;
+    clear(): void;
+}
