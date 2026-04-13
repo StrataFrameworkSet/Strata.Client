@@ -11,18 +11,22 @@ export abstract class AbstractWebSocketClientEventReceiver<E, L extends IEventLi
     private listening: boolean = false;
     private reconnectDelayMs: number = 3000;
 
-    protected constructor(uri: string | URL) {
+    protected constructor(uri: string | URL)
+    {
         super();
         this.uri = uri.toString();
     }
 
-    protected startListeningImpl(): void {
-        if (this.isListening()) {
+    protected startListeningImpl(): void
+    {
+        if (this.isListening())
+        {
             return;
         }
 
-        if (!this.hasListener()) {
-            throw new Error("No listener.");
+        if (!this.hasListener())
+        {
+            throw new Error("No listener has been provided");
         }
 
         this.listening = true;
@@ -30,16 +34,21 @@ export abstract class AbstractWebSocketClientEventReceiver<E, L extends IEventLi
         this.runListeningLoop().catch(console.error);
     }
 
-    public stopListening(): void {
+    public stopListening(): void
+    {
         this.listening = false;
 
         const s = this.session;
         this.session = null;
 
-        if (s && (s.readyState === WebSocket.OPEN || s.readyState === WebSocket.CONNECTING)) {
-            try {
+        if (s && (s.readyState === WebSocket.OPEN || s.readyState === WebSocket.CONNECTING))
+        {
+            try
+            {
                 s.close();
-            } catch (exception) {
+            }
+            catch (exception)
+            {
                 this.getListener()?.onException(
                     exception instanceof Error ? exception : new Error(String(exception))
                 );
@@ -47,25 +56,31 @@ export abstract class AbstractWebSocketClientEventReceiver<E, L extends IEventLi
         }
     }
 
-    public isListening(): boolean {
+    public isListening(): boolean
+    {
         return this.listening;
     }
 
-    private async runListeningLoop(): Promise<void> {
+    private async runListeningLoop(): Promise<void>
+    {
         const listener = this.getListener();
 
-        try {
+        try
+        {
             listener?.onStart();
-        } catch (exception) {
+        }
+        catch (exception)
+        {
             listener?.onException(exception instanceof Error ? exception : new Error(String(exception)));
         }
 
-        // Loop handles the connection and automatic reconnection
-        while (this.listening) {
+        while (this.listening)
+        {
             try
             {
                 await this.connectAndWait();
-            } catch (exception)
+            }
+            catch (exception)
             {
                 listener?.onException(exception instanceof Error ? exception : new Error(String(exception)));
 
@@ -82,7 +97,8 @@ export abstract class AbstractWebSocketClientEventReceiver<E, L extends IEventLi
 
     private connectAndWait(): Promise<void>
     {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve, reject) =>
+        {
             const listener = this.getListener();
             const ws = new WebSocket(this.uri);
             this.session = ws;
@@ -91,27 +107,34 @@ export abstract class AbstractWebSocketClientEventReceiver<E, L extends IEventLi
                 // Connection established
             };
 
-            ws.onmessage = (messageEvent) => {
-                try {
+            // incoming messages get forwarded to listener
+            ws.onmessage = (messageEvent) =>
+            {
+                try
+                {
                     // Replaces ObjectMapper
                     const payload = messageEvent.data.toString();
                     const event: E = JSON.parse(payload);
                     listener?.onEvents([event]);
-                } catch (exception) {
+                }
+                catch(exception)
+                {
                     listener?.onException(
                         exception instanceof Error ? exception : new Error("Failed to parse incoming event")
                     );
                 }
             };
 
-            ws.onerror = (errorEvent) => {
+            ws.onerror = (errorEvent) =>
+            {
                 // WebSocket DOM errors don't provide much detail natively.
                 const error = new Error("WebSocket connection error");
                 listener?.onException(error);
                 reject(error);
             };
 
-            ws.onclose = () => {
+            ws.onclose = () =>
+            {
                 this.session = null;
                 resolve(); // Resolving allows the while-loop to handle reconnection/termination
             };

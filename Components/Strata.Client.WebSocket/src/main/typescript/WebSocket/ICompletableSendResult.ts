@@ -1,4 +1,4 @@
-import {SendResult} from "./SendResult";
+import {SendResult} from "strata.foundation.core/Event";
 
 export interface ICompletableSendResult<E> {
     /**
