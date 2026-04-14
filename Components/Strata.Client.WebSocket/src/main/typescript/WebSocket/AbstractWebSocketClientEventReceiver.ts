@@ -1,6 +1,7 @@
 import {IEventListener} from "./IEventListener";
 import {AbstractEventReceiver} from "./AbstractEventReceiver";
 
+// This class provides a base implementation for WebSocket-based event receivers, handling connection management and event dispatching to a listener.
 export abstract class AbstractWebSocketClientEventReceiver<E, L extends IEventListener<E>>
     extends AbstractEventReceiver<E, L> {
 
