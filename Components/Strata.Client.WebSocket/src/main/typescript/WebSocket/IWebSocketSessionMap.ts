@@ -1,3 +1,5 @@
+// IWebSocketSessionMap.ts
+// Interface for managing WebSocket sessions by path.
 export interface IWebSocketSessionMap
 {
     addSession(path: string, session: WebSocket): void;

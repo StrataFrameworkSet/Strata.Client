@@ -1,5 +1,6 @@
 import {IEventListener} from "./IEventListener";
 
+// This class is intended to be extended by event receivers that listen for events and notify a listener
 export abstract class AbstractEventReceiver<E, L extends IEventListener<E>>
 {
     protected listener?: L;
