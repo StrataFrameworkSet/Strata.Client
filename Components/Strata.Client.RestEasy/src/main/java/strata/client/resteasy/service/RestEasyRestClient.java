@@ -13,22 +13,26 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jboss.resteasy.client.jaxrs.cache.BrowserCacheFeature;
 import strata.client.core.service.*;
+import strata.foundation.core.concurrent.BoundedExecutorService;
 import strata.foundation.core.transfer.AbstractServiceRequest;
 import strata.foundation.core.utility.BasicRetryExecutor;
 import strata.foundation.core.utility.IRetryExecutor;
 
+import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.CompletionStage;
+import java.util.concurrent.ExecutorService;
 
 public abstract
 class RestEasyRestClient
 {
-    private final ClientBuilder           builder;
+    private final Client                  client;
     private final String                  baseUrl;
     private final String                  endpointPath;
     private MultivaluedMap<String,Object> headers;
     private IResponseProcessor            responseProcessor;
     private final IRetryExecutor          retry;
+    private final ExecutorService         executorService;
     private final Logger                  logger;
 
     protected
@@ -53,12 +57,36 @@ class RestEasyRestClient
         IResponseProcessor processor,
         IRetryExecutor     retry)
     {
-        this.builder = builder;
+        this(
+            builder,
+            baseUrl,
+            endpointPath,
+            processor,
+            retry,
+            BoundedExecutorService.of(100,Duration.ofSeconds(30)));
+    }
+
+    protected
+    RestEasyRestClient(
+        ClientBuilder      builder,
+        String             baseUrl,
+        String             endpointPath,
+        IResponseProcessor processor,
+        IRetryExecutor     retry,
+        ExecutorService    executorService)
+    {
+        this.client =
+            builder
+                .register(new ObjectMapperProvider())
+                .register(new BrowserCacheFeature())
+                .build();
+
         this.baseUrl = baseUrl;
         this.endpointPath = endpointPath;
         this.headers = new MultivaluedHashMap<>();
         this.responseProcessor = processor;
         this.retry = retry;
+        this.executorService = executorService;
         this.logger = LogManager.getLogger(getClass());
     }
 
@@ -174,12 +202,6 @@ class RestEasyRestClient
     private <Request,Reply> Reply
     doPostInternal(String methodPath,Class<Reply> replyType,Request request)
     {
-        Client client =
-            builder
-                .register(new ObjectMapperProvider())
-                .register(new BrowserCacheFeature())
-                .build();
-
         try
         {
             return
@@ -202,11 +224,6 @@ class RestEasyRestClient
     private <Request,Reply> Reply
     doPutInternal(String methodPath,Class<Reply> replyType,Request request)
     {
-        Client client =
-            builder
-                .register(new ObjectMapperProvider())
-                .build();
-
         try
         {
             return
@@ -233,11 +250,6 @@ class RestEasyRestClient
     private <Reply> Reply
     doDeleteInternal(String methodPath,Class<Reply> replyType,Map<String,Object> params)
     {
-        Client client =
-            builder
-                .register(new ObjectMapperProvider())
-                .build();
-
         try
         {
             return
@@ -262,11 +274,6 @@ class RestEasyRestClient
     private <Reply> Reply
     doGetInternal(String methodPath,Class<Reply> replyType,Map<String,Object> params)
     {
-        Client client =
-            builder
-                .register(new ObjectMapperProvider())
-                .register(new BrowserCacheFeature())
-                .build();
         try
         {
             return
@@ -291,11 +298,6 @@ class RestEasyRestClient
     private <Request,Reply> CompletionStage<Reply>
     doPostAsyncInternal(String methodPath,Class<Reply> replyType,Request request)
     {
-        Client client =
-            builder
-                .register(new ObjectMapperProvider())
-                .build();
-
         return
             buildRequest(client,methodPath,request)
                 .rx()
@@ -308,11 +310,6 @@ class RestEasyRestClient
     private <Request,Reply> CompletionStage<Reply>
     doPutAsyncInternal(String methodPath,Class<Reply> replyType,Request request)
     {
-        Client client =
-            builder
-                .register(new ObjectMapperProvider())
-                .build();
-
         return
             buildRequest(client,methodPath,request)
                 .rx()
@@ -332,11 +329,6 @@ class RestEasyRestClient
         Map<String,Object> pathParams,
         Map<String,Object> queryParams)
     {
-        Client client =
-            builder
-                .register(new ObjectMapperProvider())
-                .build();
-
         return
             buildRequest(client,methodPath,null,pathParams,queryParams)
                 .rx()
@@ -353,11 +345,6 @@ class RestEasyRestClient
         Map<String,Object> pathParams,
         Map<String,Object> queryParams)
     {
-        Client client =
-            builder
-                .register(new ObjectMapperProvider())
-                .build();
-
         return
             buildRequest(client,methodPath,null,pathParams,queryParams)
                 .rx()

@@ -19,7 +19,7 @@ task sourceJar(type: Jar) {
 publishing {
     publications {
         StrataClientRestEasy(MavenPublication) {
-            artifactId = 'strata-client-resteasy'
+            artifactId = 'strata-client-vaadin'
             from components.java
 
             repositories {
