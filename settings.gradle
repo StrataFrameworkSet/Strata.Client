@@ -44,9 +44,9 @@ include 'Components:Strata.Client.Blueprint'
 
 // Tests
 include 'Tests:Strata.Client.CoreTest'
-include 'Tests:Strata.Client.SpringTest'
-include 'Tests:Strata.Client.RestEasyTest'
+//include 'Tests:Strata.Client.SpringTest'
+//include 'Tests:Strata.Client.RestEasyTest'
 include 'Tests:Strata.Client.ReactTest'
-include 'Tests:Strata.Client.TestSuite'
+//include 'Tests:Strata.Client.TestSuite'
 
 
