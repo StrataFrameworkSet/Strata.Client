@@ -24,19 +24,32 @@ class CountedClient
 {
     public
     CountedClient(Client client)
+        throws NullPointerException
     {
         super(client);
     }
 
     public
+    CountedClient(Client client,boolean counted)
+        throws NullPointerException
+    {
+        super(client,counted);
+    }
+
+    public
     CountedClient(CountedClient other)
+        throws IllegalStateException
     {
         super((CountedCloseable<Client>)other);
     }
 
     @Override
     public CountedClient
-    copy() { return new CountedClient(this); }
+    copy()
+        throws IllegalStateException
+    {
+        return new CountedClient(this);
+    }
 
     @Override
     public void
@@ -185,7 +198,18 @@ class CountedClient
     }
 
     public static CountedClient
-    of(Client client) { return new CountedClient(client); }
+    ofCountedClient(Client client)
+        throws NullPointerException
+    {
+        return new CountedClient(client,true);
+    }
+
+    public static CountedClient
+    ofUncountedClient(Client client)
+        throws NullPointerException
+    {
+        return new CountedClient(client,false);
+    }
 }
 
 //////////////////////////////////////////////////////////////////////////////

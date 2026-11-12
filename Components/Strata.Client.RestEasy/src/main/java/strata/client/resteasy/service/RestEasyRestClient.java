@@ -111,16 +111,16 @@ class RestEasyRestClient
         IRetryExecutor     retry)
     {
         this(
-            client.copy(),
-            null,
-            false,
+            client,
+            BoundedExecutorService.of(100,Duration.ofSeconds(30)),
+            true,
             baseUrl,
             endpointPath,
             processor,
             retry);
     }
 
-    private
+    protected
     RestEasyRestClient(
         ClientBuilder      builder,
         ExecutorService    executorService,
@@ -140,7 +140,7 @@ class RestEasyRestClient
             retry);
     }
 
-    private
+    protected
     RestEasyRestClient(
         CountedClient      client,
         ExecutorService    executorService,
@@ -150,7 +150,7 @@ class RestEasyRestClient
         IResponseProcessor processor,
         IRetryExecutor     retry)
     {
-        this.client = client;
+        this.client = client.copy();
         this.baseUrl = baseUrl;
         this.endpointPath = endpointPath;
         this.headers = new MultivaluedHashMap<>();
@@ -527,7 +527,7 @@ class RestEasyRestClient
     buildClient(ClientBuilder builder,ExecutorService executorService)
     {
         return
-            new CountedClient(
+            CountedClient.ofUncountedClient(
                 builder
                     .executorService(executorService)
                     .register(new ObjectMapperProvider())
