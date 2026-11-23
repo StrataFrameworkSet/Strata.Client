@@ -176,8 +176,8 @@ GitHub Packages requires authentication even for downloads; use a personal acces
 | npm packages | `X.Y.0-snapshot.<timestamp>`, dist-tag `snapshot-X.Y.0` | `X.Y.0-release.<timestamp>`, dist-tags `release-X.Y.0` and `latest` |
 
 - `development` publishes the next minor version as snapshots:
-  - The build pipeline publishes Maven snapshots of `strata-client-core`, `-resteasy`, `-spring` and `-websocket`.
-  - Running `yarn build` locally publishes npm snapshots of `strata.client.core`, `.react`, `.mui` and `.blueprint`.
+  - On every push (not on pull requests), the build pipeline publishes Maven snapshots of `strata-client-core`, `-resteasy`, `-spring` and `-websocket`.
+  - It also publishes npm snapshots of `strata.client.core`, `.react`, `.mui` and `.blueprint`.
 - A release is made on a `release-X.Y` branch:
   - Its last snapshot is promoted to the release version with `strata-client-promote.ps1` / `strata-client-promote.sh`. Run it with `--dry-run` / `-DryRun` first.
   - The promoted npm packages pin their `strata.*` dependencies to exact release versions.
