@@ -1,0 +1,26 @@
+{
+  "name": "strata.client.websocket",
+  "version": "1.0.0",
+  "description": "Abstract Web Socket Client for the Strata FrameworkSet",
+  "main": ".build/dist/index.js",
+  "types": ".build/dist/index.d.ts",
+  "scripts": {
+    "copy-package": "shx cp src/main/typescript/package.json .build/dist/package.json",
+    "clean": "del-cli -f .build/dist ./*.tgz",
+    "build-init": "yarn run clean && yarn install && yarn upgrade --pattern strata",
+    "build": "yarn run build-init && tsc && cd src/main/typescript && yarn run increment-snapshot && cd ../../.. && yarn run copy-package && cd .build/dist && yarn pack",
+    "publish-package": "yarn run build && cd .build/dist && yarn publish --non-interactive --tag 0.0.0-snapshot",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "del-cli": "^6.0.0",
+    "npm-prerelease-timestamp": "^1.0.1",
+    "shx": "^0.3.4",
+    "typescript": "^5.2.2"
+  },
+  "author": "Strata FrameworkSet",
+  "license": "ISC",
+  "dependencies": {
+    "strata.foundation.core": "0.0.0-snapshot"
+  }
+}
