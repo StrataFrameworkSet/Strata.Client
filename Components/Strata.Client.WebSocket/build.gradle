@@ -17,8 +17,8 @@ task sourceJar(type: Jar) {
 
 publishing {
     publications {
-        StrataServerWebSocket(MavenPublication) {
-            artifactId = 'strata-server-websocket'
+        StrataClientWebSocket(MavenPublication) {
+            artifactId = 'strata-client-websocket'
             from components.java
 
             repositories {

@@ -1,5 +1,5 @@
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)]()
-[![Version](https://img.shields.io/badge/version-1.0--SNAPSHOT-orange.svg)]()
+[![Release](https://img.shields.io/badge/release-1.0.0-blue.svg)]()
 
 Client-side components and utilities for building robust, scalable enterprise client applications in the Strata Framework Set. This library provides Model-View-Presenter (MVP) architecture, React integration, UI component libraries, and client-side patterns for building high-performance client applications.
 
@@ -123,42 +123,30 @@ Spring Framework integration component for client-side REST communication and se
 
 ## Installation
 
+The current release is **1.0.0** (see [Versioning](#versioning)).
+
 ### Gradle
 
 Add the following dependencies to your `build.gradle`:
 
 ```gradle
 dependencies {
-    implementation 'strata.client:strata-client-core:1.0-SNAPSHOT'
-    implementation 'strata.client:strata-client-react:1.0-SNAPSHOT'
-    implementation 'strata.client:strata-client-mui:1.0-SNAPSHOT'
-    implementation 'strata.client:strata-client-blueprint:1.0-SNAPSHOT'
-    implementation 'strata.client:strata-client-spring:1.0-SNAPSHOT'
-
-    // For testing
-    testImplementation 'strata.client:strata-client-core-test:1.0-SNAPSHOT'
-    testImplementation 'strata.client:strata-client-react-test:1.0-SNAPSHOT'
+    implementation 'strata.client:strata-client-core:1.0.0'
+    implementation 'strata.client:strata-client-resteasy:1.0.0'
+    implementation 'strata.client:strata-client-spring:1.0.0'
 }
 ```
 
-### npm/yarn
+### TypeScript (npm / yarn)
 
-Add the following dependencies to your `package.json`:
+The TypeScript packages `strata.client.core`, `strata.client.react`, `strata.client.mui` and `strata.client.blueprint` are published to npmjs.org. Install the 1.0.0 release by dist-tag:
 
-```json
-{
-  "dependencies": {
-    "strata.client.core": "0.0.0-snapshot",
-    "strata.client.react": "0.0.0-snapshot",
-    "strata.client.mui": "0.0.0-snapshot",
-    "strata.client.blueprint": "0.0.0-snapshot"
-  }
-}
-```
-
-Install with yarn:
 ```bash
-yarn install
+npm install strata.client.core@release-1.0.0 strata.client.react@release-1.0.0
+npm install strata.client.mui@release-1.0.0        # Material-UI components
+npm install strata.client.blueprint@release-1.0.0  # Blueprint components
+# or
+yarn add strata.client.core@release-1.0.0 strata.client.react@release-1.0.0
 ```
 
 ### Repository Configuration
@@ -177,6 +165,26 @@ repositories {
     }
 }
 ```
+
+GitHub Packages requires authentication even for downloads; use a personal access token with the `read:packages` scope.
+
+## Versioning
+
+| | Development snapshot | Release |
+|---|---|---|
+| Maven jars | `X.Y.0-SNAPSHOT` (e.g. `1.0.0-SNAPSHOT`) | `X.Y.0` (e.g. `1.0.0`) |
+| npm packages | `X.Y.0-snapshot.<timestamp>`, dist-tag `snapshot-X.Y.0` | `X.Y.0-release.<timestamp>`, dist-tags `release-X.Y.0` and `latest` |
+
+- `development` publishes the next minor version as snapshots:
+  - The build pipeline publishes Maven snapshots of `strata-client-core`, `-resteasy`, `-spring` and `-websocket`.
+  - Running `yarn build` locally publishes npm snapshots of `strata.client.core`, `.react`, `.mui` and `.blueprint`.
+- A release is made on a `release-X.Y` branch:
+  - Its last snapshot is promoted to the release version with `strata-client-promote.ps1` / `strata-client-promote.sh`. Run it with `--dry-run` / `-DryRun` first.
+  - The promoted npm packages pin their `strata.*` dependencies to exact release versions.
+  - `strata-client-websocket` is published as a snapshot only and is not released.
+  - `development` then moves on to the next minor version.
+- Strata.Client 1.0.0 depends on Strata.Foundation 1.0.0 (Maven `strata-foundation-core:1.0.0`, npm `strata.foundation.core@release-1.0.0`).
+- The build pipeline reserves the TestSuite Docker image `strata-client-testsuite` for its integration and acceptance stages. Those stages are placeholders until a TestSuite exists. Each CI build computes a `<version>-<UTC yyyyMMddHHmmss>` tag, and the image is not released.
 
 ## Usage
 
@@ -788,7 +796,7 @@ class CustomerPresenterTest
 ### Build Commands
 
 ```bash
-# Build all components
+# Build all components (also publishes npm snapshots, dist-tag snapshot-X.Y.0)
 yarn build
 
 # Build specific components
