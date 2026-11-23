@@ -1,5 +1,6 @@
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)]()
 [![Release](https://img.shields.io/badge/release-1.0.0-blue.svg)]()
+[![Snapshot](https://img.shields.io/badge/snapshot-1.1.0--SNAPSHOT-orange.svg)]()
 
 Client-side components and utilities for building robust, scalable enterprise client applications in the Strata Framework Set. This library provides Model-View-Presenter (MVP) architecture, React integration, UI component libraries, and client-side patterns for building high-performance client applications.
 
@@ -123,7 +124,7 @@ Spring Framework integration component for client-side REST communication and se
 
 ## Installation
 
-The current release is **1.0.0** (see [Versioning](#versioning)).
+The current release is **1.0.0**. To try the latest development build, use `1.1.0-SNAPSHOT` instead (see [Versioning](#versioning)).
 
 ### Gradle
 
@@ -139,14 +140,18 @@ dependencies {
 
 ### TypeScript (npm / yarn)
 
-The TypeScript packages `strata.client.core`, `strata.client.react`, `strata.client.mui` and `strata.client.blueprint` are published to npmjs.org. Install the 1.0.0 release by dist-tag:
+The TypeScript packages `strata.client.core`, `strata.client.react`, `strata.client.mui` and `strata.client.blueprint` are published to npmjs.org. Install them by dist-tag:
 
 ```bash
+# Current release (1.0.0)
 npm install strata.client.core@release-1.0.0 strata.client.react@release-1.0.0
 npm install strata.client.mui@release-1.0.0        # Material-UI components
 npm install strata.client.blueprint@release-1.0.0  # Blueprint components
 # or
 yarn add strata.client.core@release-1.0.0 strata.client.react@release-1.0.0
+
+# Latest development snapshot (1.1.0)
+npm install strata.client.core@snapshot-1.1.0 strata.client.react@snapshot-1.1.0
 ```
 
 ### Repository Configuration
@@ -172,7 +177,7 @@ GitHub Packages requires authentication even for downloads; use a personal acces
 
 | | Development snapshot | Release |
 |---|---|---|
-| Maven jars | `X.Y.0-SNAPSHOT` (e.g. `1.0.0-SNAPSHOT`) | `X.Y.0` (e.g. `1.0.0`) |
+| Maven jars | `X.Y.0-SNAPSHOT` (e.g. `1.1.0-SNAPSHOT`) | `X.Y.0` (e.g. `1.0.0`) |
 | npm packages | `X.Y.0-snapshot.<timestamp>`, dist-tag `snapshot-X.Y.0` | `X.Y.0-release.<timestamp>`, dist-tags `release-X.Y.0` and `latest` |
 
 - `development` publishes the next minor version as snapshots:
@@ -183,7 +188,7 @@ GitHub Packages requires authentication even for downloads; use a personal acces
   - The promoted npm packages pin their `strata.*` dependencies to exact release versions.
   - `strata-client-websocket` is published as a snapshot only and is not released.
   - `development` then moves on to the next minor version.
-- Strata.Client 1.0.0 depends on Strata.Foundation 1.0.0 (Maven `strata-foundation-core:1.0.0`, npm `strata.foundation.core@release-1.0.0`).
+- Strata.Client 1.0.0 and 1.1.0-SNAPSHOT depend on Strata.Foundation 1.0.0 (Maven `strata-foundation-core:1.0.0`, npm `strata.foundation.core@release-1.0.0`).
 - The build pipeline reserves the TestSuite Docker image `strata-client-testsuite` for its integration and acceptance stages. Those stages are placeholders until a TestSuite exists. Each CI build computes a `<version>-<UTC yyyyMMddHHmmss>` tag, and the image is not released.
 
 ## Usage
