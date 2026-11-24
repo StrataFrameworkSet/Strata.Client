@@ -901,6 +901,10 @@ For questions, issues, or contributions, please:
 - [Strata.Foundation](https://github.com/StrataFrameworkSet/Strata.Foundation) - Foundational components and utilities
 - [Strata.Server](https://github.com/StrataFrameworkSet/Strata.Server) - Server-side components and utilities
 
+## Project Status
+
+The current release is **1.0.0**. This `release-1.0` branch carries 1.0.x maintenance; new development continues on `development`.
+
 ---
 
 **Strata.Client** is part of the Strata Framework Set, providing enterprise-grade client-side components for building scalable, maintainable applications.
