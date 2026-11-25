@@ -22,8 +22,6 @@
             <option value="$PROJECT_DIR$/Tests/Strata.Client.CoreTest" />
             <option value="$PROJECT_DIR$/Tests/Strata.Client.ReactTest" />
             <option value="$PROJECT_DIR$/Tests/Strata.Client.RestEasyTest" />
-            <option value="$PROJECT_DIR$/Tests/Strata.Client.SpringTest" />
-            <option value="$PROJECT_DIR$/Tests/Strata.Client.TestSuite" />
           </set>
         </option>
       </GradleProjectSettings>

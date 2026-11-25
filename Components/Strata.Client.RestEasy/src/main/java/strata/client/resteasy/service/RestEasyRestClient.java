@@ -25,14 +25,16 @@ import java.util.concurrent.ExecutorService;
 
 public abstract
 class RestEasyRestClient
+    implements AutoCloseable
 {
-    private final Client                  client;
+    private final CountedClient           client;
     private final String                  baseUrl;
     private final String                  endpointPath;
     private MultivaluedMap<String,Object> headers;
     private IResponseProcessor            responseProcessor;
     private final IRetryExecutor          retry;
     private final ExecutorService         executorService;
+    private final boolean                 ownsExecutor;
     private final Logger                  logger;
 
     protected
@@ -59,11 +61,12 @@ class RestEasyRestClient
     {
         this(
             builder,
+            BoundedExecutorService.of(100,Duration.ofSeconds(30)),
+            true,
             baseUrl,
             endpointPath,
             processor,
-            retry,
-            BoundedExecutorService.of(100,Duration.ofSeconds(30)));
+            retry);
     }
 
     protected
@@ -75,19 +78,104 @@ class RestEasyRestClient
         IRetryExecutor     retry,
         ExecutorService    executorService)
     {
-        this.client =
-            builder
-                .register(new ObjectMapperProvider())
-                .register(new BrowserCacheFeature())
-                .build();
+        this(
+            builder,
+            executorService,
+            false,
+            baseUrl,
+            endpointPath,
+            processor,
+            retry);
+    }
 
+    protected
+    RestEasyRestClient(
+        CountedClient client,
+        String        baseUrl,
+        String        endpointPath)
+    {
+        this(
+            client,
+            baseUrl,
+            endpointPath,
+            new StandardResponseProcessor(),
+            new BasicRetryExecutor());
+    }
+
+    protected
+    RestEasyRestClient(
+        CountedClient      client,
+        String             baseUrl,
+        String             endpointPath,
+        IResponseProcessor processor,
+        IRetryExecutor     retry)
+    {
+        this(
+            client,
+            BoundedExecutorService.of(100,Duration.ofSeconds(30)),
+            true,
+            baseUrl,
+            endpointPath,
+            processor,
+            retry);
+    }
+
+    protected
+    RestEasyRestClient(
+        ClientBuilder      builder,
+        ExecutorService    executorService,
+        boolean            ownsExecutor,
+        String             baseUrl,
+        String             endpointPath,
+        IResponseProcessor processor,
+        IRetryExecutor     retry)
+    {
+        this(
+            buildClient(builder,executorService),
+            executorService,
+            ownsExecutor,
+            baseUrl,
+            endpointPath,
+            processor,
+            retry);
+    }
+
+    protected
+    RestEasyRestClient(
+        CountedClient      client,
+        ExecutorService    executorService,
+        boolean            ownsExecutor,
+        String             baseUrl,
+        String             endpointPath,
+        IResponseProcessor processor,
+        IRetryExecutor     retry)
+    {
+        this.client = client.copy();
         this.baseUrl = baseUrl;
         this.endpointPath = endpointPath;
         this.headers = new MultivaluedHashMap<>();
         this.responseProcessor = processor;
         this.retry = retry;
         this.executorService = executorService;
+        this.ownsExecutor = ownsExecutor;
         this.logger = LogManager.getLogger(getClass());
+    }
+
+    @Override
+    public void
+    close()
+    {
+        logger.debug("Closing client");
+
+        try
+        {
+            client.close();
+        }
+        finally
+        {
+            if (ownsExecutor)
+                executorService.shutdown();
+        }
     }
 
     @Deprecated
@@ -202,97 +290,53 @@ class RestEasyRestClient
     private <Request,Reply> Reply
     doPostInternal(String methodPath,Class<Reply> replyType,Request request)
     {
-        try
-        {
-            return
-                responseProcessor.process(
-                    replyType,
-                    toResponse(
-                        methodPath,
-                        buildRequest(client,methodPath,request).post(Entity.json(request))));
-        }
-        finally
-        {
-            if (Objects.nonNull(client))
-            {
-                logger.debug("Closing client");
-                client.close();
-            }
-        }
+        return
+            responseProcessor.process(
+                replyType,
+                toResponse(
+                    methodPath,
+                    buildRequest(client,methodPath,request).post(Entity.json(request))));
     }
 
     private <Request,Reply> Reply
     doPutInternal(String methodPath,Class<Reply> replyType,Request request)
     {
-        try
-        {
-            return
-                responseProcessor.process(
-                    replyType,
-                    toResponse(
-                        methodPath,
-                        buildRequest(client,methodPath,request)
-                            .put(
-                                Entity.entity(
-                                    request,
-                                    MediaType.APPLICATION_JSON))));
-        }
-        finally
-        {
-            if (Objects.nonNull(client))
-            {
-                logger.debug("Closing client");
-                client.close();
-            }
-        }
+        return
+            responseProcessor.process(
+                replyType,
+                toResponse(
+                    methodPath,
+                    buildRequest(client,methodPath,request)
+                        .put(
+                            Entity.entity(
+                                request,
+                                MediaType.APPLICATION_JSON))));
     }
 
     private <Reply> Reply
     doDeleteInternal(String methodPath,Class<Reply> replyType,Map<String,Object> params)
     {
-        try
-        {
-            return
-                responseProcessor.process(
-                    replyType,
-                    toResponse(
-                        methodPath,
-                        buildRequest(client,methodPath,null,Map.of(),params)
-                            .buildDelete()
-                            .invoke()));
-        }
-        finally
-        {
-            if (Objects.nonNull(client))
-            {
-                logger.debug("Closing client");
-                client.close();
-            }
-        }
+        return
+            responseProcessor.process(
+                replyType,
+                toResponse(
+                    methodPath,
+                    buildRequest(client,methodPath,null,Map.of(),params)
+                        .buildDelete()
+                        .invoke()));
     }
 
     private <Reply> Reply
     doGetInternal(String methodPath,Class<Reply> replyType,Map<String,Object> params)
     {
-        try
-        {
-            return
-                responseProcessor.process(
-                    replyType,
-                    toResponse(
-                        methodPath,
-                        buildRequest(client,methodPath,null,Map.of(),params)
-                            .buildGet()
-                            .invoke()));
-        }
-        finally
-        {
-            if (Objects.nonNull(client))
-            {
-                logger.debug("Closing client");
-                client.close();
-            }
-        }
+        return
+            responseProcessor.process(
+                replyType,
+                toResponse(
+                    methodPath,
+                    buildRequest(client,methodPath,null,Map.of(),params)
+                        .buildGet()
+                        .invoke()));
     }
 
     private <Request,Reply> CompletionStage<Reply>
@@ -304,7 +348,7 @@ class RestEasyRestClient
                 .post(Entity.json(request))
                 .thenApply(
                     response ->
-                        processResponse(client,methodPath,replyType,response));
+                        processResponse(methodPath,replyType,response));
     }
 
     private <Request,Reply> CompletionStage<Reply>
@@ -319,7 +363,7 @@ class RestEasyRestClient
                         MediaType.APPLICATION_JSON))
                 .thenApply(
                     response ->
-                        processResponse(client,methodPath,replyType,response));
+                        processResponse(methodPath,replyType,response));
     }
 
     private <Reply> CompletionStage<Reply>
@@ -335,7 +379,7 @@ class RestEasyRestClient
                 .delete()
                 .thenApply(
                     response ->
-                        processResponse(client,methodPath,replyType,response));
+                        processResponse(methodPath,replyType,response));
     }
 
     protected <Reply> CompletionStage<Reply>
@@ -351,7 +395,7 @@ class RestEasyRestClient
                 .get()
                 .thenApply(
                     response ->
-                        processResponse(client,methodPath,replyType,response));
+                        processResponse(methodPath,replyType,response));
     }
 
     private <Request> Invocation.Builder
@@ -469,26 +513,26 @@ class RestEasyRestClient
 
     private <Reply> Reply
     processResponse(
-        Client       client,
         String       methodPath,
         Class<Reply> replyType,
         Response     response)
     {
-        try
-        {
-            return
-                responseProcessor.process(
-                    replyType,
-                    toResponse(methodPath,response));
-        }
-        finally
-        {
-            if (Objects.nonNull(client))
-            {
-                logger.debug("Closing client");
-                client.close();
-            }
-        }
+        return
+            responseProcessor.process(
+                replyType,
+                toResponse(methodPath,response));
+    }
+
+    private static CountedClient
+    buildClient(ClientBuilder builder,ExecutorService executorService)
+    {
+        return
+            CountedClient.ofUncountedClient(
+                builder
+                    .executorService(executorService)
+                    .register(new ObjectMapperProvider())
+                    .register(new BrowserCacheFeature())
+                    .build());
     }
 
     private IResponse
