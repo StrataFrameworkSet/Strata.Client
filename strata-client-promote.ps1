@@ -29,8 +29,9 @@ $NpmPackages = @(
 )
 $NpmSnapshotFor = @{}
 $NpmReleased    = @{}
+$NpmPending     = New-Object System.Collections.Generic.List[string]
 $NpmRegistry = 'https://registry.npmjs.org/'
-$NpmVisibleTimeoutSeconds = 300
+$NpmVisibleTimeoutSeconds = 600
 $Snapshot    = "$Version-SNAPSHOT"
 $Checksums  = @{ sha1 = 'SHA1'; md5 = 'MD5'; sha256 = 'SHA256'; sha512 = 'SHA512' }
 $Utf8NoBom  = New-Object System.Text.UTF8Encoding $false
@@ -312,28 +313,50 @@ function Invoke-NpmPromote([string]$Package, [string]$PinScriptPath, [string]$Wo
             Write-Plan "would PUBLISH $Package@$release to $registry with dist-tag $releaseTag"
         } else {
             Invoke-Npm @('publish', (Join-Path $dir 'package'), '--registry', $registry, '--tag', $releaseTag) | Out-Null
-            Write-Info "npm published $Package@$release (dist-tag $releaseTag); waiting for it to become visible"
-            $deadline = (Get-Date).AddSeconds($NpmVisibleTimeoutSeconds)
-            while (-not (Test-NpmVersion $Package $release $registry)) {
-                if ((Get-Date) -gt $deadline) {
-                    Stop-Promote "$Package@$release is not visible on $registry after $NpmVisibleTimeoutSeconds s; check 'npm view $Package dist-tags' before re-running"
-                }
-                Start-Sleep -Seconds 15
-            }
-            Write-Info "published $Package@$release"
+            Write-Info "npm published $Package@$release (dist-tag $releaseTag)"
+            $NpmPending.Add($Package)
         }
     }
     $NpmReleased[$Package] = $release
 
-    foreach ($distTag in @($releaseTag, 'latest')) {
+    if (-not $NpmPending.Contains($Package)) { Set-NpmTags $Package $release }
+    return $true
+}
+
+function Set-NpmTags([string]$Package, [string]$Release) {
+    foreach ($distTag in @("release-$Version", 'latest')) {
         if ($DryRun) {
-            Write-Plan "would TAG $Package@$release as $distTag"
+            Write-Plan "would TAG $Package@$Release as $distTag"
         } else {
-            Invoke-Npm @('dist-tag', 'add', "$Package@$release", $distTag, '--registry', $registry) | Out-Null
-            Write-Info "tagged $distTag -> $release"
+            Invoke-Npm @('dist-tag', 'add', "$Package@$Release", $distTag, '--registry', $NpmRegistry) | Out-Null
+            Write-Info "tagged $distTag -> $Release"
         }
     }
-    return $true
+}
+
+function Complete-NpmPending {
+    $remaining = @($NpmPending)
+    if ($remaining.Count -eq 0) { return }
+    Write-Step "Waiting for $($remaining.Count) published package(s) to become visible on $NpmRegistry"
+    $deadline = (Get-Date).AddSeconds($NpmVisibleTimeoutSeconds)
+    while ($true) {
+        $still = @()
+        foreach ($package in $remaining) {
+            $release = $NpmReleased[$package]
+            if (Test-NpmVersion $package $release $NpmRegistry) {
+                Write-Info "visible: $package@$release"
+                Set-NpmTags $package $release
+            } else {
+                $still += $package
+            }
+        }
+        if ($still.Count -eq 0) { return }
+        $remaining = $still
+        if ((Get-Date) -gt $deadline) {
+            Stop-Promote "not visible on $NpmRegistry after $NpmVisibleTimeoutSeconds s: $($remaining -join ', '); re-run with the same -ReleaseStamp to move their tags"
+        }
+        Start-Sleep -Seconds 15
+    }
 }
 
 function Show-Help {
@@ -354,6 +377,7 @@ Promotes published <version>-SNAPSHOT builds of Strata Client to release <versio
     Takes each package from dist-tag snapshot-<version> (<version>-snapshot.<timestamp>),
     publishes it as <version>-release.<timestamp>, and points dist-tags release-<version>
     and latest at it. If that release version already exists, only the tags are moved.
+    Every package is published first; latest is moved once its new version is visible.
     Every strata.* snapshot-<v> dependency in the published package.json becomes release-<v>;
     every other spec, including release-* dist-tags, is kept as is. A snapshot-<v> dependency
     fails unless its package is promoted in this run or release-<v> already exists.
@@ -414,6 +438,7 @@ try {
         foreach ($package in $NpmPackages) {
             Invoke-NpmPromote $package $pinScriptPath $work | Out-Null
         }
+        Complete-NpmPending
     }
     if ($skipped.Count -gt 0) { Write-Step "Done; skipped: $($skipped -join ', ')" } else { Write-Step 'Done' }
 } finally {
