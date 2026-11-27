@@ -3,6 +3,7 @@ set -euo pipefail
 
 VERSION=""
 NPM_SNAPSHOTS=()
+RELEASE_STAMP=""
 DRY_RUN=false
 FORCE=false
 SKIP_MAVEN=false
@@ -13,7 +14,7 @@ NAME="$(basename "$0")"
 print_help() {
     cat <<EOF
 Usage:
-  $NAME --version <x.y.z> [--npm-snapshot <package>=<ver>]... [--dry-run] [--force] [--skip-maven] [--skip-npm]
+  $NAME --version <x.y.z> [--npm-snapshot <package>=<ver>]... [--release-stamp <ts>] [--dry-run] [--force] [--skip-maven] [--skip-npm]
   $NAME --help
 
 Promotes published <version>-SNAPSHOT builds of Strata Client to release <version>.
@@ -28,14 +29,16 @@ Promotes published <version>-SNAPSHOT builds of Strata Client to release <versio
     Takes each package from dist-tag snapshot-<version> (<version>-snapshot.<timestamp>),
     publishes it as <version>-release.<timestamp>, and points dist-tags release-<version>
     and latest at it. If that release version already exists, only the tags are moved.
-    Every strata.* dependency in the published package.json is pinned to an exact version:
-    packages promoted in this run to their release version, release-*/latest dist-tags to
-    the version they currently resolve to. A snapshot-* dependency on any other package fails.
+    Every strata.* snapshot-<v> dependency in the published package.json becomes release-<v>;
+    every other spec, including release-* dist-tags, is kept as is. A snapshot-<v> dependency
+    fails unless its package is promoted in this run or release-<v> already exists.
 
 Parameters:
   --version <x.y.z>               Release version to promote (required), e.g. 1.0.0
   --npm-snapshot <package>=<ver>  npm snapshot to promote for <package> instead of its
                                   snapshot-<version> dist-tag target (repeatable)
+  --release-stamp <ts>            Publish as <version>-release.<ts> instead of reusing the
+                                  snapshot timestamp (to republish an existing release)
   --dry-run                       Download and stage everything; print deletes, uploads and
                                   tags without changing any registry
   --force                         Do not prompt before deleting an existing Maven release
@@ -56,7 +59,7 @@ EOF
 }
 
 usage() {
-    echo "usage: $NAME --version <x.y.z> [--npm-snapshot <package>=<ver>]... [--dry-run] [--force] [--skip-maven] [--skip-npm]" >&2
+    echo "usage: $NAME --version <x.y.z> [--npm-snapshot <package>=<ver>]... [--release-stamp <ts>] [--dry-run] [--force] [--skip-maven] [--skip-npm]" >&2
     echo "       $NAME --help" >&2
     exit 2
 }
@@ -65,6 +68,7 @@ while [ $# -gt 0 ]; do
     case "$1" in
         --version)      [ $# -ge 2 ] || usage; VERSION="$2"; shift 2 ;;
         --npm-snapshot) [ $# -ge 2 ] || usage; NPM_SNAPSHOTS+=("$2"); shift 2 ;;
+        --release-stamp) [ $# -ge 2 ] || usage; RELEASE_STAMP="$2"; shift 2 ;;
         --dry-run)      DRY_RUN=true; shift ;;
         --force)        FORCE=true; shift ;;
         --skip-maven)   SKIP_MAVEN=true; shift ;;
@@ -273,6 +277,7 @@ write_pin_script() {
 const fs = require("fs");
 const { execFileSync } = require("child_process");
 const [manifest, from, to, releasedFile, registry] = process.argv.slice(2);
+const version = to.replace(/-release\..*$/, "");
 const released = JSON.parse(fs.readFileSync(releasedFile, "utf8"));
 const fail = m => { console.error(m); process.exit(1); };
 const j = JSON.parse(fs.readFileSync(manifest, "utf8"));
@@ -284,20 +289,19 @@ for (const field of ["dependencies", "peerDependencies", "optionalDependencies"]
     if (!deps) continue;
     for (const [name, spec] of Object.entries(deps)) {
         if (!name.startsWith("strata.")) continue;
-        let pinned;
-        if (released[name]) {
-            pinned = released[name];
-        } else if (/^snapshot-/.test(spec)) {
-            fail(field + " " + name + "@" + spec + " is a snapshot that is not promoted in this run");
-        } else if (/^release-/.test(spec) || spec === "latest") {
-            pinned = execFileSync("npm", ["view", name + "@" + spec, "version", "--registry", registry],
-                { encoding: "utf8", shell: process.platform === "win32" }).trim();
-            if (!/^\d+\.\d+\.\d+\S*$/.test(pinned)) fail("could not resolve " + name + "@" + spec);
-        } else {
-            continue;
+        const snapshot = /^snapshot-(.+)$/.exec(spec);
+        if (!snapshot) continue;
+        const tag = "release-" + snapshot[1];
+        if (!(released[name] && snapshot[1] === version)) {
+            let resolved = "";
+            try {
+                resolved = execFileSync("npm", ["view", name + "@" + tag, "version", "--registry", registry],
+                    { encoding: "utf8", shell: process.platform === "win32", stdio: ["ignore", "pipe", "ignore"] }).trim();
+            } catch (e) {}
+            if (!/^\d+\.\d+\.\d+\S*$/.test(resolved)) fail(field + " " + name + "@" + spec + " is not promoted in this run and " + name + "@" + tag + " does not exist");
         }
-        deps[name] = pinned;
-        notes.push(field + " " + name + ": " + spec + " -> " + pinned);
+        deps[name] = tag;
+        notes.push(field + " " + name + ": " + spec + " -> " + tag);
     }
 }
 fs.writeFileSync(manifest, JSON.stringify(j, null, 2) + "\n");
@@ -338,15 +342,15 @@ npm_promote() {
     fi
     stamp=$(printf '%s' "$source" | sed -n "s/^$(regex_escape "$VERSION")-snapshot\.\([0-9][0-9]*\)$/\1/p")
     [ -n "$stamp" ] || die "$source is not a $VERSION-snapshot.<timestamp> version"
-    release="$VERSION-release.$stamp"
+    release="$VERSION-release.${RELEASE_STAMP:-$stamp}"
     info "source snapshot: $package@$source"
     info "release version: $package@$release"
 
     if npm_version_exists "$package" "$release" "$registry"; then
         info "$package@$release already exists; only the tags will be moved"
         existing=$(npm view "$package@$release" dependencies --json --registry "$registry" 2>/dev/null || true)
-        if printf '%s' "$existing" | grep -q '"strata\.[^"]*": *"snapshot-'; then
-            info "WARNING: $package@$release depends on a snapshot-* dist-tag: $(printf '%s' "$existing" | tr -d '\r\n ')"
+        if printf '%s' "$existing" | grep -q '"strata\.[^"]*": *"\(snapshot-\|[0-9]\)'; then
+            info "WARNING: $package@$release depends on a snapshot-* dist-tag or an exact version: $(printf '%s' "$existing" | tr -d '\r\n ')"
         fi
     else
         info "$package@$release does not exist yet"
@@ -394,6 +398,8 @@ npm_promote() {
 shopt -s nocasematch
 [[ "$VERSION" == *snapshot* ]] && die "pass the release version (e.g. 1.0.0), not a snapshot"
 shopt -u nocasematch
+
+[ -z "$RELEASE_STAMP" ] || [[ "$RELEASE_STAMP" =~ ^[0-9]+$ ]] || die "--release-stamp must be a number, got '$RELEASE_STAMP'"
 
 for entry in "${NPM_SNAPSHOTS[@]}"; do
     pkg="${entry%%=*}"
