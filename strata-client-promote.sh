@@ -29,6 +29,7 @@ Promotes published <version>-SNAPSHOT builds of Strata Client to release <versio
     Takes each package from dist-tag snapshot-<version> (<version>-snapshot.<timestamp>),
     publishes it as <version>-release.<timestamp>, and points dist-tags release-<version>
     and latest at it. If that release version already exists, only the tags are moved.
+    Every package is published first; latest is moved once its new version is visible.
     Every strata.* snapshot-<v> dependency in the published package.json becomes release-<v>;
     every other spec, including release-* dist-tags, is kept as is. A snapshot-<v> dependency
     fails unless its package is promoted in this run or release-<v> already exists.
@@ -96,8 +97,9 @@ NPM_PACKAGES=(
 )
 declare -A NPM_SNAPSHOT_FOR=()
 declare -A NPM_RELEASED=()
+NPM_PENDING=()
 NPM_REGISTRY="https://registry.npmjs.org/"
-NPM_VISIBLE_TIMEOUT_SECONDS=300
+NPM_VISIBLE_TIMEOUT_SECONDS=600
 SNAPSHOT="$VERSION-SNAPSHOT"
 CHECKSUMS=(sha512 sha256 md5 sha1)
 
@@ -370,29 +372,50 @@ npm_promote() {
         else
             npm publish "$dir/package" --registry "$registry" --tag "$release_tag" > /dev/null \
                 || die "npm publish $package@$release failed"
-            info "npm published $package@$release (dist-tag $release_tag); waiting for it to become visible"
-            local waited=0
-            until npm_version_exists "$package" "$release" "$registry"; do
-                [ "$waited" -lt "$NPM_VISIBLE_TIMEOUT_SECONDS" ] \
-                    || die "$package@$release is not visible on $registry after ${NPM_VISIBLE_TIMEOUT_SECONDS}s; check 'npm view $package dist-tags' before re-running"
-                sleep 15
-                waited=$((waited + 15))
-            done
-            info "published $package@$release"
+            info "npm published $package@$release (dist-tag $release_tag)"
+            NPM_PENDING+=("$package")
         fi
     fi
     NPM_RELEASED[$package]="$release"
 
-    for dist_tag in "$release_tag" latest; do
+    [[ " ${NPM_PENDING[*]} " == *" $package "* ]] || npm_tag "$package" "$release"
+    return 0
+}
+
+npm_tag() {
+    local package="$1" release="$2" dist_tag
+    for dist_tag in "release-$VERSION" latest; do
         if $DRY_RUN; then
             plan "would TAG $package@$release as $dist_tag"
         else
-            npm dist-tag add "$package@$release" "$dist_tag" --registry "$registry" > /dev/null \
+            npm dist-tag add "$package@$release" "$dist_tag" --registry "$NPM_REGISTRY" > /dev/null \
                 || die "npm dist-tag add $dist_tag failed for $package"
             info "tagged $dist_tag -> $release"
         fi
     done
-    return 0
+}
+
+npm_finish_pending() {
+    local remaining=("${NPM_PENDING[@]}") still package waited=0
+    [ ${#remaining[@]} -gt 0 ] || return 0
+    step "Waiting for ${#remaining[@]} published package(s) to become visible on $NPM_REGISTRY"
+    while true; do
+        still=()
+        for package in "${remaining[@]}"; do
+            if npm_version_exists "$package" "${NPM_RELEASED[$package]}" "$NPM_REGISTRY"; then
+                info "visible: $package@${NPM_RELEASED[$package]}"
+                npm_tag "$package" "${NPM_RELEASED[$package]}"
+            else
+                still+=("$package")
+            fi
+        done
+        [ ${#still[@]} -gt 0 ] || return 0
+        remaining=("${still[@]}")
+        [ "$waited" -lt "$NPM_VISIBLE_TIMEOUT_SECONDS" ] \
+            || die "not visible on $NPM_REGISTRY after ${NPM_VISIBLE_TIMEOUT_SECONDS}s: ${remaining[*]}; re-run with the same --release-stamp to move their tags"
+        sleep 15
+        waited=$((waited + 15))
+    done
 }
 
 shopt -s nocasematch
@@ -427,6 +450,7 @@ if ! $SKIP_NPM; then
     for package in "${NPM_PACKAGES[@]}"; do
         npm_promote "$package"
     done
+    npm_finish_pending
 fi
 if [ ${#SKIPPED[@]} -gt 0 ]; then
     step "Done; skipped: ${SKIPPED[*]}"
